@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import { Users, X, UserMinus, ShieldCheck, LogOut, Loader2 } from "lucide-react";
+import { Users, X, UserMinus, ShieldCheck, LogOut, Loader2, ShieldPlus } from "lucide-react";
 import { Conversation, Participant } from "../types/chat.types";
-import { useRemoveParticipant } from "../hooks/useConversations";
+import { useRemoveParticipant, usePromoteAdmin } from "../hooks/useConversations";
 import { UserAvatar } from "./UserAvatar";
 import { Button } from "@/components/ui/button";
 
@@ -22,7 +22,8 @@ export function GroupMembersDialog({
   currentUserId,
   onLeaveGroupSuccess,
 }: GroupMembersDialogProps) {
-  const { mutate: removeMember, isPending } = useRemoveParticipant();
+  const { mutate: removeMember, isPending: isRemoving } = useRemoveParticipant();
+  const { mutate: promoteAdmin, isPending: isPromoting } = usePromoteAdmin();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -42,6 +43,7 @@ export function GroupMembersDialog({
 
   const admins = conversation.admins || [];
   const isAdmin = currentUserId ? admins.includes(currentUserId) : false;
+  const isBusy = isRemoving || isPromoting;
 
   const handleRemove = (userId: string) => {
     removeMember(
@@ -72,12 +74,8 @@ export function GroupMembersDialog({
               <Users className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900">
-                {conversation.name || "Group Members"}
-              </h3>
-              <p className="text-xs text-slate-500">
-                {participants.length} member{participants.length !== 1 ? "s" : ""}
-              </p>
+              <h3 className="text-sm font-bold text-slate-900">{conversation.name || "Group"}</h3>
+              <p className="text-xs text-slate-500">{participants.length} members</p>
             </div>
           </div>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600 p-1">
@@ -85,16 +83,13 @@ export function GroupMembersDialog({
           </button>
         </div>
 
-        <div className="p-4 space-y-3 max-h-72 overflow-y-auto divide-y divide-slate-100">
+        <div className="p-4 space-y-2 max-h-72 overflow-y-auto divide-y divide-slate-100">
           {participants.map((member) => {
             const memberIsAdmin = admins.includes(member._id);
             const isSelf = member._id === currentUserId;
 
             return (
-              <div
-                key={member._id}
-                className="flex items-center justify-between py-2 first:pt-0 last:pb-0"
-              >
+              <div key={member._id} className="flex items-center justify-between py-2 first:pt-0 last:pb-0">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <UserAvatar name={member.name} size="sm" />
                   <div className="truncate">
@@ -112,13 +107,25 @@ export function GroupMembersDialog({
                   </div>
                 </div>
 
-                <div>
+                <div className="flex items-center gap-1 shrink-0">
+                  {isAdmin && !memberIsAdmin && !isSelf && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => promoteAdmin({ conversationId: conversation._id, userId: member._id })}
+                      disabled={isBusy}
+                      title="Promote to Admin"
+                      className="h-7 px-2 text-[11px] text-indigo-600 hover:bg-indigo-50"
+                    >
+                      <ShieldPlus className="h-3.5 w-3.5 mr-1" /> Make Admin
+                    </Button>
+                  )}
                   {isSelf ? (
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => handleRemove(member._id)}
-                      disabled={isPending}
+                      disabled={isBusy}
                       className="h-7 text-xs text-red-600 hover:bg-red-50"
                     >
                       <LogOut className="h-3.5 w-3.5 mr-1" /> Leave
@@ -128,7 +135,7 @@ export function GroupMembersDialog({
                       variant="ghost"
                       size="sm"
                       onClick={() => handleRemove(member._id)}
-                      disabled={isPending}
+                      disabled={isBusy}
                       className="h-7 text-xs text-slate-500 hover:text-red-600 hover:bg-red-50"
                     >
                       <UserMinus className="h-3.5 w-3.5 mr-1" /> Remove
@@ -141,8 +148,8 @@ export function GroupMembersDialog({
         </div>
 
         <div className="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
-          <Button variant="outline" size="sm" onClick={onClose} disabled={isPending}>
-            {isPending && <Loader2 className="h-3 w-3 animate-spin mr-1" />} Close
+          <Button variant="outline" size="sm" onClick={onClose} disabled={isBusy}>
+            {isBusy && <Loader2 className="h-3 w-3 animate-spin mr-1" />} Close
           </Button>
         </div>
       </div>

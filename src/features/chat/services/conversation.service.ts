@@ -48,4 +48,14 @@ export const conversationService = {
       }
     );
   },
+
+  promoteAdmin: (conversationId: string, userId: string) => {
+    return apiFetch<GroupConversationResponse>(
+      `/conversations/${conversationId}/admins`,
+      {
+        method: "POST",
+        body: { userId },
+      }
+    );
+  },
 };

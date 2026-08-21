@@ -91,3 +91,23 @@ export function useRemoveParticipant(onSuccessCallback?: () => void) {
     },
   });
 }
+
+export function usePromoteAdmin(onSuccessCallback?: () => void) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      conversationId,
+      userId,
+    }: {
+      conversationId: string;
+      userId: string;
+    }) => conversationService.promoteAdmin(conversationId, userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY });
+      if (onSuccessCallback) {
+        onSuccessCallback();
+      }
+    },
+  });
+}

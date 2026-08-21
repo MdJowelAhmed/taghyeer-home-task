@@ -56,7 +56,8 @@ describe("GroupMembersDialog", () => {
     expect(screen.getByText("Project 3 Team")).toBeInTheDocument();
     expect(screen.getByText(/Jowel/i)).toBeInTheDocument();
     expect(screen.getByText(/Shariful Alam/i)).toBeInTheDocument();
-    expect(screen.getByText(/Admin/i)).toBeInTheDocument();
+    expect(screen.getByText("Admin")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /make admin/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /remove/i })).toBeInTheDocument();
   });
 

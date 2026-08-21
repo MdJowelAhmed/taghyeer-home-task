@@ -68,36 +68,36 @@ export function CreateGroupDialog({
   return (
     <div
       onClick={handleClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+        className="w-full max-w-md bg-brand-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/25 overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-100"
       >
-        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div className="p-4 border-b border-purple-500/15 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+            <div className="p-2 rounded-xl bg-brand-gradient text-white shadow-md">
               <Users className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900">Create Group</h3>
-              <p className="text-xs text-slate-500">Chat with multiple people</p>
+              <h3 className="text-sm font-bold text-white">Create Group</h3>
+              <p className="text-xs text-slate-400">Chat with multiple people</p>
             </div>
           </div>
-          <button onClick={handleClose} className="text-slate-400 hover:text-slate-600 p-1">
+          <button onClick={handleClose} className="text-slate-400 hover:text-white p-1">
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-4 space-y-3">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-700">Group Name</label>
+            <label className="text-xs font-semibold text-slate-300">Group Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Project 3 Team"
-              className="w-full h-9 px-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full h-9 px-3 rounded-xl bg-brand-sidebar border border-purple-500/20 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-gradient-from"
               required
             />
           </div>
@@ -107,7 +107,7 @@ export function CreateGroupDialog({
               {selectedUsers.map((u) => (
                 <span
                   key={u._id}
-                  className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-medium border border-indigo-100"
+                  className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-full bg-purple-500/20 text-purple-200 text-xs font-medium border border-purple-500/30"
                 >
                   <span>{u.name}</span>
                   <button type="button" onClick={() => toggleUser(u)}>
@@ -124,16 +124,16 @@ export function CreateGroupDialog({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search participants by name..."
-              className="w-full h-9 px-3 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full h-9 px-3 rounded-xl bg-brand-sidebar border border-purple-500/20 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-gradient-from"
             />
             {isLoading && (
-              <div className="flex items-center gap-1 text-xs text-slate-400 pt-1">
-                <Loader2 className="h-3 w-3 animate-spin text-indigo-500" />
+              <div className="flex items-center gap-1 text-xs text-purple-300 pt-1">
+                <Loader2 className="h-3 w-3 animate-spin text-brand-gradient-to" />
                 <span>Searching...</span>
               </div>
             )}
             {searchResults && searchResults.length > 0 && (
-              <div className="max-h-36 overflow-y-auto rounded-xl border border-slate-200 bg-white p-1 divide-y divide-slate-100 mt-1">
+              <div className="max-h-36 overflow-y-auto rounded-xl border border-purple-500/20 bg-brand-sidebar/90 p-1 divide-y divide-purple-500/10 mt-1">
                 {searchResults.map((u) => {
                   const isSelected = selectedUsers.some((sel) => sel._id === u._id);
                   return (
@@ -141,17 +141,17 @@ export function CreateGroupDialog({
                       key={u._id}
                       type="button"
                       onClick={() => toggleUser(u)}
-                      className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 text-left"
+                      className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-purple-950/40 text-left"
                     >
                       <div className="flex items-center gap-2 min-w-0">
                         <UserAvatar name={u.name} size="sm" />
                         <div className="truncate">
-                          <p className="text-xs font-semibold text-slate-800 truncate">{u.name}</p>
+                          <p className="text-xs font-semibold text-slate-200 truncate">{u.name}</p>
                           <p className="text-[10px] text-slate-400 font-mono">{u.phone}</p>
                         </div>
                       </div>
                       {isSelected ? (
-                        <Check className="h-4 w-4 text-indigo-600" />
+                        <Check className="h-4 w-4 text-brand-gradient-to" />
                       ) : (
                         <Plus className="h-4 w-4 text-slate-400" />
                       )}
@@ -162,7 +162,7 @@ export function CreateGroupDialog({
             )}
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-2 pt-2 border-t border-purple-500/15">
             <Button type="button" variant="outline" size="sm" onClick={handleClose}>
               Cancel
             </Button>

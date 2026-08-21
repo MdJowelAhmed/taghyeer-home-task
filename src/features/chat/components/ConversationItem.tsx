@@ -32,14 +32,14 @@ export function ConversationItem({
     <button
       onClick={() => onSelect(conversation._id)}
       className={cn(
-        "w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left group",
+        "w-full flex items-center gap-3 p-3 rounded-2xl transition-all duration-150 text-left group",
         isSelected
-          ? "bg-indigo-50 border border-indigo-100 shadow-sm"
-          : "hover:bg-slate-100/70"
+          ? "bg-gradient-to-r from-purple-950/70 to-purple-900/30 border border-purple-500/40 shadow-lg shadow-purple-950/40"
+          : "hover:bg-brand-surface/60 border border-transparent"
       )}
     >
       {isGroup ? (
-        <div className="h-10 w-10 rounded-full bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+        <div className="h-10 w-10 rounded-full bg-brand-gradient text-white flex items-center justify-center shrink-0 shadow-md shadow-purple-900/30">
           <Users className="h-5 w-5" />
         </div>
       ) : (
@@ -52,13 +52,13 @@ export function ConversationItem({
             <h4
               className={cn(
                 "text-sm font-semibold truncate",
-                isSelected ? "text-indigo-900" : "text-slate-900"
+                isSelected ? "text-white" : "text-slate-200"
               )}
             >
               {name}
             </h4>
             {isGroup && (
-              <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-700 font-medium shrink-0">
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 font-medium shrink-0">
                 Group
               </span>
             )}
@@ -67,7 +67,7 @@ export function ConversationItem({
             <span
               className={cn(
                 "text-[11px] shrink-0",
-                isSelected ? "text-indigo-600 font-medium" : "text-slate-400"
+                isSelected ? "text-purple-300 font-medium" : "text-slate-500"
               )}
             >
               {formattedTime}
@@ -79,13 +79,13 @@ export function ConversationItem({
           <p
             className={cn(
               "truncate max-w-[180px]",
-              isSelected ? "text-indigo-700" : "text-slate-500"
+              isSelected ? "text-purple-200/90" : "text-slate-400"
             )}
           >
             {lastMessageText}
           </p>
           {phone && (
-            <span className="text-[10px] text-slate-400 font-mono hidden sm:inline">
+            <span className="text-[10px] text-slate-500 font-mono hidden sm:inline">
               {phone}
             </span>
           )}

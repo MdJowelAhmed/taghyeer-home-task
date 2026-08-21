@@ -8,6 +8,10 @@ import { ChatNavbar } from "@/features/chat/components/ChatNavbar";
 import { ChatLayout } from "@/features/chat/components/ChatLayout";
 import { Loader2 } from "lucide-react";
 
+/**
+ * Main Chat Application Page.
+ * Protects route via JWT token verification and renders the Taghyeer interface.
+ */
 export default function ChatPage() {
   const router = useRouter();
   const { data: user, isLoading } = useCurrentUser();
@@ -22,18 +26,23 @@ export default function ChatPage() {
 
   if (isLoading && !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="flex items-center gap-2 text-sm text-slate-500 font-medium">
-          <Loader2 className="h-5 w-5 animate-spin text-indigo-600" />
-          <span>Loading chat session...</span>
+      <div className="min-h-screen flex items-center justify-center bg-brand-bg">
+        <div className="flex flex-col items-center gap-3 text-sm text-purple-300 font-medium">
+          <div className="p-3 rounded-2xl bg-purple-500/15 border border-purple-500/30 shadow-lg shadow-purple-950/60">
+            <Loader2 className="h-6 w-6 animate-spin text-brand-gradient-to" />
+          </div>
+          <span className="tracking-wide">Initializing Taghyeer Chat session...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col bg-slate-50 overflow-hidden select-none">
+    <div className="h-screen flex flex-col bg-brand-bg overflow-hidden select-none">
+      {/* Top Navbar */}
       <ChatNavbar user={user} onLogout={logout} />
+
+      {/* Main Two-Column Layout */}
       <ChatLayout currentUserId={user?._id} />
     </div>
   );

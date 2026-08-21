@@ -25,11 +25,15 @@ export function ChatLayout({ currentUserId }: ChatLayoutProps) {
   }, [conversations, selectedConversationId]);
 
   return (
-    <div className="flex-1 flex overflow-hidden">
-      {/* Sidebar: Visible on desktop, or on mobile when no conversation is active */}
+    <div className="relative flex-1 flex overflow-hidden bg-brand-bg">
+      {/* Background Ambient Glows */}
+      <div className="absolute top-[-10%] left-[20%] w-[450px] h-[450px] rounded-full bg-purple-900/15 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] rounded-full bg-fuchsia-900/10 blur-[140px] pointer-events-none" />
+
+      {/* Sidebar */}
       <div
         className={cn(
-          "w-full md:w-auto h-full flex flex-col shrink-0",
+          "w-full md:w-auto h-full flex flex-col shrink-0 z-10",
           selectedConversationId ? "hidden md:flex" : "flex"
         )}
       >
@@ -41,10 +45,10 @@ export function ChatLayout({ currentUserId }: ChatLayoutProps) {
         />
       </div>
 
-      {/* Main Chat Area: Visible on desktop, or on mobile when conversation is active */}
+      {/* Main Chat Area */}
       <div
         className={cn(
-          "flex-1 h-full flex flex-col overflow-hidden",
+          "flex-1 h-full flex flex-col overflow-hidden z-10",
           !selectedConversationId ? "hidden md:flex" : "flex"
         )}
       >

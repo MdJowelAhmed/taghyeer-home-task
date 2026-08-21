@@ -46,7 +46,7 @@ export function ChatWindow({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-slate-50 overflow-hidden">
+    <div className="flex-1 flex flex-col h-full bg-brand-bg/95 overflow-hidden relative">
       <ChatHeader
         conversation={conversation}
         currentUserId={currentUserId}

@@ -24,9 +24,9 @@ export function ChatSidebar({
   const [isGroupOpen, setIsGroupOpen] = useState(false);
 
   return (
-    <aside className="w-full md:w-80 lg:w-96 flex flex-col border-r border-slate-200 bg-white shrink-0 h-full">
+    <aside className="w-full md:w-80 lg:w-96 flex flex-col border-r border-purple-500/15 bg-brand-sidebar/80 backdrop-blur-xl shrink-0 h-full">
       {/* Top Search bar & New Group Action */}
-      <div className="p-4 border-b border-slate-100 flex items-center gap-2">
+      <div className="p-4 border-b border-purple-500/15 flex items-center gap-2">
         <div className="flex-1">
           <UserSearch onSelectConversation={onSelectConversation} />
         </div>
@@ -35,21 +35,21 @@ export function ChatSidebar({
           size="icon"
           onClick={() => setIsGroupOpen(true)}
           title="Create Group"
-          className="h-10 w-10 shrink-0 rounded-xl text-slate-600 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50"
+          className="h-10 w-10 shrink-0 rounded-xl text-purple-300 hover:text-white hover:bg-brand-gradient hover:border-transparent transition-all"
         >
           <Users className="h-4 w-4" />
         </Button>
       </div>
 
       {/* Header with Counter */}
-      <div className="px-4 py-3 flex items-center justify-between">
+      <div className="px-4 py-3 flex items-center justify-between border-b border-purple-500/10">
         <div className="flex items-center gap-2">
-          <MessageSquare className="h-4 w-4 text-indigo-600" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            Messages
+          <MessageSquare className="h-4 w-4 text-brand-gradient-to" />
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
+            Conversations
           </h3>
         </div>
-        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30">
           {conversations.length}
         </span>
       </div>

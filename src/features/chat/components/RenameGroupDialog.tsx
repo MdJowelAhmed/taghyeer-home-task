@@ -50,41 +50,41 @@ export function RenameGroupDialog({
   return (
     <div
       onClick={handleClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+        className="w-full max-w-md bg-brand-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/25 overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-100"
       >
-        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div className="p-4 border-b border-purple-500/15 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+            <div className="p-2 rounded-xl bg-brand-gradient text-white shadow-md">
               <Edit3 className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900">Rename Group</h3>
-              <p className="text-xs text-slate-500">Change this group&apos;s display name</p>
+              <h3 className="text-sm font-bold text-white">Rename Group</h3>
+              <p className="text-xs text-slate-400">Change this group&apos;s display name</p>
             </div>
           </div>
-          <button onClick={handleClose} className="text-slate-400 hover:text-slate-600 p-1">
+          <button onClick={handleClose} className="text-slate-400 hover:text-white p-1">
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-700">Group Name</label>
+            <label className="text-xs font-semibold text-slate-300">Group Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter new group name"
-              className="w-full h-9 px-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full h-9 px-3 rounded-xl bg-brand-sidebar border border-purple-500/20 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-gradient-from"
               required
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-2 pt-2 border-t border-purple-500/15">
             <Button type="button" variant="outline" size="sm" onClick={handleClose}>
               Cancel
             </Button>

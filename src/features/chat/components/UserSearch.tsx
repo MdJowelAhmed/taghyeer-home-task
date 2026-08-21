@@ -24,7 +24,6 @@ export function UserSearch({ onSelectConversation }: UserSearchProps) {
       setIsOpen(false);
     });
 
-  // Close dropdown on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -45,7 +44,7 @@ export function UserSearch({ onSelectConversation }: UserSearchProps) {
   return (
     <div ref={containerRef} className="relative w-full">
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-purple-400/60" />
         <input
           type="text"
           value={query}
@@ -55,12 +54,12 @@ export function UserSearch({ onSelectConversation }: UserSearchProps) {
           }}
           onFocus={() => setIsOpen(true)}
           placeholder="Search people by name..."
-          className="w-full h-10 pl-9 pr-8 rounded-xl bg-slate-100/90 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
+          className="w-full h-10 pl-9 pr-8 rounded-xl bg-brand-card/80 border border-purple-500/25 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-gradient-from focus:border-transparent transition-all"
         />
         {query && (
           <button
             onClick={() => setQuery("")}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
           >
             <X className="h-4 w-4" />
           </button>
@@ -69,10 +68,10 @@ export function UserSearch({ onSelectConversation }: UserSearchProps) {
 
       {/* Results Dropdown */}
       {isOpen && query.trim().length >= 1 && (
-        <div className="absolute left-0 right-0 top-12 z-30 max-h-72 overflow-y-auto rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl">
+        <div className="absolute left-0 right-0 top-12 z-30 max-h-72 overflow-y-auto rounded-2xl border border-purple-500/30 bg-brand-card/95 backdrop-blur-xl p-1.5 shadow-2xl shadow-purple-950/80">
           {isLoading ? (
-            <div className="flex items-center justify-center p-4 text-xs text-slate-500 gap-2">
-              <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
+            <div className="flex items-center justify-center p-4 text-xs text-purple-300 gap-2">
+              <Loader2 className="h-4 w-4 animate-spin text-brand-gradient-to" />
               <span>Searching users...</span>
             </div>
           ) : users && users.length > 0 ? (
@@ -82,27 +81,27 @@ export function UserSearch({ onSelectConversation }: UserSearchProps) {
                   key={user._id}
                   onClick={() => handleSelectUser(user)}
                   disabled={isCreating}
-                  className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 transition-colors text-left group"
+                  className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-purple-950/40 transition-colors text-left group"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <UserAvatar name={user.name} size="sm" />
                     <div className="truncate">
-                      <p className="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 truncate">
+                      <p className="text-sm font-semibold text-slate-100 group-hover:text-purple-300 truncate">
                         {user.name}
                       </p>
-                      <p className="text-xs text-slate-400 truncate">
+                      <p className="text-xs text-slate-400 font-mono truncate">
                         {user.phone}
                       </p>
                     </div>
                   </div>
-                  <div className="shrink-0 text-slate-400 group-hover:text-indigo-600 pl-2">
+                  <div className="shrink-0 text-purple-400 group-hover:text-brand-gradient-to pl-2">
                     <UserPlus className="h-4 w-4" />
                   </div>
                 </button>
               ))}
             </div>
           ) : (
-            <div className="p-4 text-center text-xs text-slate-500">
+            <div className="p-4 text-center text-xs text-slate-400">
               No users found matching &quot;{query}&quot;
             </div>
           )}

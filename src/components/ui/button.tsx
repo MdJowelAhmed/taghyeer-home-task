@@ -28,26 +28,26 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]";
+      "inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]";
 
     const variantStyles = {
       default:
-        "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm focus-visible:ring-indigo-500",
+        "bg-brand-gradient text-white shadow-lg shadow-purple-950/50 hover:shadow-purple-600/30 hover:brightness-110 focus-visible:ring-purple-500",
       destructive:
-        "bg-red-600 text-white hover:bg-red-700 shadow-sm focus-visible:ring-red-500",
+        "bg-red-600/90 text-white hover:bg-red-600 shadow-sm focus-visible:ring-red-500",
       outline:
-        "border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 text-slate-700 focus-visible:ring-slate-400",
+        "border border-purple-500/30 bg-brand-card/60 hover:bg-brand-surface hover:border-purple-400 text-slate-200 focus-visible:ring-purple-400",
       secondary:
-        "bg-slate-100 text-slate-900 hover:bg-slate-200 focus-visible:ring-slate-400",
+        "bg-brand-surface text-slate-200 hover:bg-[#172255] border border-purple-500/20 focus-visible:ring-purple-400",
       ghost:
-        "hover:bg-slate-100 hover:text-slate-900 text-slate-600 focus-visible:ring-slate-400",
-      link: "text-indigo-600 underline-offset-4 hover:underline focus-visible:ring-indigo-500",
+        "hover:bg-purple-950/40 hover:text-purple-300 text-slate-300 focus-visible:ring-purple-400",
+      link: "text-brand-gradient-to underline-offset-4 hover:underline focus-visible:ring-purple-400",
     };
 
     const sizeStyles = {
       default: "h-10 px-4 py-2",
-      sm: "h-8 rounded-md px-3 text-xs",
-      lg: "h-12 rounded-lg px-8 text-base",
+      sm: "h-8 rounded-lg px-3 text-xs",
+      lg: "h-12 rounded-xl px-8 text-base",
       icon: "h-10 w-10 p-0",
     };
 

@@ -1,1 +1,65 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand-bg: #020618;
+  --color-brand-card: #0b102b;
+  --color-brand-sidebar: #070c22;
+  --color-brand-surface: #0e163b;
+  --color-brand-gradient-from: #8926fe;
+  --color-brand-gradient-to: #d72dfc;
+}
+
+:root {
+  --brand-bg: #020618;
+  --brand-card: #0b102b;
+  --brand-sidebar: #070c22;
+  --brand-surface: #0e163b;
+  --brand-gradient-from: #8926fe;
+  --brand-gradient-to: #d72dfc;
+}
+
+body {
+  background-color: var(--brand-bg);
+  color: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(2, 6, 24, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(137, 38, 254, 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(215, 45, 252, 0.5);
+}
+
+/* Centralized Gradient Utilities */
+.bg-brand-gradient {
+  background: linear-gradient(
+    270deg,
+    var(--brand-gradient-from) 0%,
+    var(--brand-gradient-to) 100%
+  );
+}
+
+.text-brand-gradient {
+  background: linear-gradient(
+    270deg,
+    var(--brand-gradient-from) 0%,
+    var(--brand-gradient-to) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

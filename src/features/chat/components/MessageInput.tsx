@@ -29,7 +29,7 @@ export function MessageInput({ onSendMessage, isLoading }: MessageInputProps) {
   };
 
   return (
-    <div className="p-3 md:p-4 border-t border-slate-200 bg-white shrink-0">
+    <div className="p-3 md:p-4 border-t border-purple-500/15 bg-brand-sidebar/80 backdrop-blur-xl shrink-0 z-10">
       <form onSubmit={handleSubmit} className="flex items-center gap-2">
         <input
           type="text"
@@ -38,13 +38,13 @@ export function MessageInput({ onSendMessage, isLoading }: MessageInputProps) {
           onKeyDown={handleKeyDown}
           placeholder="Type a message..."
           disabled={isLoading}
-          className="flex-1 h-11 px-4 rounded-xl bg-slate-100/90 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
+          className="flex-1 h-11 px-4 rounded-xl bg-brand-card/80 border border-purple-500/25 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-gradient-from focus:border-transparent transition-all"
         />
 
         <Button
           type="submit"
           disabled={!text.trim() || isLoading}
-          className="h-11 w-11 p-0 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shrink-0 shadow-md shadow-indigo-100"
+          className="h-11 w-11 p-0 rounded-xl bg-brand-gradient hover:brightness-110 text-white shrink-0 shadow-lg shadow-purple-950/60 transition-all"
         >
           {isLoading ? (
             <Loader2 className="h-5 w-5 animate-spin" />

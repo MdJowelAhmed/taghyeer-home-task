@@ -19,13 +19,13 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
 
   if (messages.length === 0) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center text-slate-400 space-y-2">
-        <div className="p-3 rounded-2xl bg-indigo-50 text-indigo-500">
+      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center text-slate-400 space-y-2.5">
+        <div className="p-3.5 rounded-2xl bg-purple-500/15 text-[#D72DFC] border border-purple-500/25 shadow-lg shadow-purple-950/40">
           <MessageSquareDashed className="h-6 w-6" />
         </div>
-        <p className="text-sm font-medium text-slate-600">No messages yet</p>
-        <p className="text-xs text-slate-400">
-          Send a greeting to start this conversation!
+        <p className="text-sm font-semibold text-slate-200">No messages yet</p>
+        <p className="text-xs text-slate-400 max-w-xs">
+          Send a greeting or message below to start the conversation!
         </p>
       </div>
     );

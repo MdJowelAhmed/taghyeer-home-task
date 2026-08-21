@@ -1,29 +1,50 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-bg: #020618;
-  --color-brand-card: #0b102b;
-  --color-brand-sidebar: #070c22;
-  --color-brand-surface: #0e163b;
+  --color-brand-bg: var(--brand-bg);
+  --color-brand-card: var(--brand-card);
+  --color-brand-sidebar: var(--brand-sidebar);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-border: var(--brand-border);
+  --color-brand-text: var(--brand-text);
+  --color-brand-muted: var(--brand-muted);
   --color-brand-gradient-from: #8926fe;
   --color-brand-gradient-to: #d72dfc;
 }
 
+/* Light Theme Variables */
 :root {
+  --brand-bg: #f8fafc;
+  --brand-card: #ffffff;
+  --brand-sidebar: #f1f5f9;
+  --brand-surface: #e2e8f0;
+  --brand-border: rgba(137, 38, 254, 0.15);
+  --brand-text: #0f172a;
+  --brand-muted: #64748b;
+  --brand-gradient-from: #8926fe;
+  --brand-gradient-to: #d72dfc;
+}
+
+/* Dark Theme Variables */
+.dark {
   --brand-bg: #020618;
   --brand-card: #0b102b;
   --brand-sidebar: #070c22;
   --brand-surface: #0e163b;
+  --brand-border: rgba(137, 38, 254, 0.22);
+  --brand-text: #f8fafc;
+  --brand-muted: #94a3b8;
   --brand-gradient-from: #8926fe;
   --brand-gradient-to: #d72dfc;
 }
 
 body {
   background-color: var(--brand-bg);
-  color: #f8fafc;
+  color: var(--brand-text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Custom Scrollbars */
@@ -33,7 +54,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(2, 6, 24, 0.6);
+  background: var(--brand-bg);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -47,19 +68,11 @@ body {
 
 /* Centralized Gradient Utilities */
 .bg-brand-gradient {
-  background: linear-gradient(
-    270deg,
-    var(--brand-gradient-from) 0%,
-    var(--brand-gradient-to) 100%
-  );
+  background: linear-gradient(270deg, #8926fe 0%, #d72dfc 100%);
 }
 
 .text-brand-gradient {
-  background: linear-gradient(
-    270deg,
-    var(--brand-gradient-from) 0%,
-    var(--brand-gradient-to) 100%
-  );
+  background: linear-gradient(270deg, #8926fe 0%, #d72dfc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

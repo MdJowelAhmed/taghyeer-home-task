@@ -1,4 +1,5 @@
 import { LoginForm } from "@/features/auth/components/LoginForm";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,11 +8,16 @@ export const metadata: Metadata = {
 };
 
 /**
- * Login Page with Taghyeer dark theme, cyber mesh lighting, and glassmorphic card container.
+ * Login Page with Taghyeer dark/light theme, cyber mesh lighting, and glassmorphic card container.
  */
 export default function LoginPage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-brand-bg relative overflow-hidden">
+      {/* Top Bar with Theme Toggle */}
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle />
+      </div>
+
       {/* Taghyeer Hero Cyber Lighting Orbs */}
       <div className="absolute -top-40 -right-40 w-[550px] h-[550px] bg-purple-900/20 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute -bottom-40 -left-40 w-[550px] h-[550px] bg-fuchsia-900/15 rounded-full blur-[140px] pointer-events-none" />
@@ -32,7 +38,7 @@ export default function LoginPage() {
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-card/80 border border-purple-500/30 text-xs font-semibold text-purple-300 shadow-md mb-2">
           <span>Enterprise Real-time Messaging</span>
         </div>
-        <h1 className="text-xl md:text-2xl font-bold text-white tracking-tight">
+        <h1 className="text-xl md:text-2xl font-bold text-brand-text tracking-tight">
           Building Scalable{" "}
           <span className="text-brand-gradient">
             Digital Systems
@@ -46,7 +52,7 @@ export default function LoginPage() {
       </div>
 
       {/* Footer Info */}
-      <footer className="mt-8 text-center text-xs text-slate-500 z-10">
+      <footer className="mt-8 text-center text-xs text-brand-muted z-10">
         <p>© 2026 Taghyeer. All rights reserved.</p>
       </footer>
     </main>

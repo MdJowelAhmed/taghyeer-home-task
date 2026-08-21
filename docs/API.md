@@ -247,6 +247,80 @@ participants	object[]	List of participant user objects
 createdAt	string	Creation timestamp
 updatedAt	string	Last update timestamp
 
+POST /conversations/{id}/participants
+Adds one or more members to an existing group conversation (admins only).
+
+Request
+Method: POST
+
+Endpoint:
+/conversations/{id}/participants
+
+Authentication
+This endpoint requires a JWT Bearer token.
+Authorization: Bearer <JWT_TOKEN>
+
+Path Parameters:
+Parameter	Type	Required	Description
+id	string	Yes	The group conversation ID
+
+Request Body:
+```json
+{
+  "userIds": [
+    "6a882e06e5d6aac97521e841"
+  ]
+}
+```
+
+Response:
+```json
+{
+  "_id": "6a885fcce5d6aac975228715",
+  "type": "group",
+  "name": "Project 3 Team",
+  "createdBy": "6a8844fce5d6aac975221b2c",
+  "admins": [
+    "6a8844fce5d6aac975221b2c"
+  ],
+  "participants": [
+    {
+      "_id": "6a8844fce5d6aac975221b2c",
+      "name": "Jowel",
+      "phone": "0107852398"
+    },
+    {
+      "_id": "6a8836c4e5d6aac97521f774",
+      "name": "shariful alam",
+      "phone": "+8801700000000"
+    },
+    {
+      "_id": "6a882e06e5d6aac97521e841",
+      "name": "kabita",
+      "phone": "654564564565"
+    },
+    {
+      "_id": "6a883edbe5d6aac975220d2a",
+      "name": "kamrul islam",
+      "phone": "+8801709678345"
+    }
+  ],
+  "createdAt": "2026-08-21T14:25:16.314Z",
+  "updatedAt": "2026-08-21T14:26:52.934Z"
+}
+```
+
+Response Fields
+Field	Type	Description
+_id	string	Unique group conversation ID
+type	string	Conversation type, "group"
+name	string	Group name
+createdBy	string	User ID of the creator
+admins	string[]	List of admin user IDs
+participants	object[]	List of updated participant user objects
+createdAt	string	Creation timestamp
+updatedAt	string	Last update timestamp
+
 Messages
 POST /messages
 Sends a message to a conversation.

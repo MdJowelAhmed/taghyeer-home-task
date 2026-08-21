@@ -4,6 +4,7 @@ import {
   CreateConversationPayload,
   CreateConversationResponse,
   CreateGroupPayload,
+  AddParticipantsPayload,
   GroupConversationResponse,
 } from "../types/chat.types";
 
@@ -24,5 +25,18 @@ export const conversationService = {
       method: "POST",
       body: payload,
     });
+  },
+
+  addParticipants: (
+    conversationId: string,
+    payload: AddParticipantsPayload
+  ) => {
+    return apiFetch<GroupConversationResponse>(
+      `/conversations/${conversationId}/participants`,
+      {
+        method: "POST",
+        body: payload,
+      }
+    );
   },
 };

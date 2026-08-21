@@ -40,7 +40,7 @@ describe("AddMemberDialog", () => {
     );
 
     expect(
-      screen.getByPlaceholderText(/type a name to search/i)
+      screen.getByPlaceholderText(/search user name/i)
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /add members/i })

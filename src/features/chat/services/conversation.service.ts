@@ -39,4 +39,13 @@ export const conversationService = {
       }
     );
   },
+
+  removeParticipant: (conversationId: string, userId: string) => {
+    return apiFetch<GroupConversationResponse>(
+      `/conversations/${conversationId}/participants/${userId}`,
+      {
+        method: "DELETE",
+      }
+    );
+  },
 };

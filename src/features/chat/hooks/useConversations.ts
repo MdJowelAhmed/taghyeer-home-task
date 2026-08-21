@@ -71,3 +71,23 @@ export function useAddParticipants(onSuccessCallback?: () => void) {
     },
   });
 }
+
+export function useRemoveParticipant(onSuccessCallback?: () => void) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      conversationId,
+      userId,
+    }: {
+      conversationId: string;
+      userId: string;
+    }) => conversationService.removeParticipant(conversationId, userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY });
+      if (onSuccessCallback) {
+        onSuccessCallback();
+      }
+    },
+  });
+}

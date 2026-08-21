@@ -1,19 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Phone, Users, UserPlus } from "lucide-react";
+import { ArrowLeft, Phone, Users, UserPlus, Info } from "lucide-react";
 import { Conversation } from "../types/chat.types";
 import { UserAvatar } from "./UserAvatar";
 import { AddMemberDialog } from "./AddMemberDialog";
+import { GroupMembersDialog } from "./GroupMembersDialog";
 import { Button } from "@/components/ui/button";
 
 interface ChatHeaderProps {
   conversation: Conversation;
+  currentUserId?: string;
   onBack: () => void;
 }
 
-export function ChatHeader({ conversation, onBack }: ChatHeaderProps) {
+export function ChatHeader({
+  conversation,
+  currentUserId,
+  onBack,
+}: ChatHeaderProps) {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
+  const [isMembersOpen, setIsMembersOpen] = useState(false);
 
   const isGroup = conversation.type === "group";
   const name = isGroup
@@ -33,7 +40,6 @@ export function ChatHeader({ conversation, onBack }: ChatHeaderProps) {
     <>
       <div className="h-16 px-4 md:px-6 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3 min-w-0">
-          {/* Mobile Back Button */}
           <Button
             variant="ghost"
             size="icon"
@@ -66,28 +72,49 @@ export function ChatHeader({ conversation, onBack }: ChatHeaderProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           {isGroup && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsAddMemberOpen(true)}
-              className="flex items-center gap-1.5 text-xs text-indigo-600 border-indigo-200 hover:bg-indigo-50"
-            >
-              <UserPlus className="h-4 w-4" />
-              <span className="hidden sm:inline">Add Member</span>
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsAddMemberOpen(true)}
+                className="flex items-center gap-1 text-xs text-indigo-600 border-indigo-200 hover:bg-indigo-50"
+              >
+                <UserPlus className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Add</span>
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsMembersOpen(true)}
+                className="flex items-center gap-1 text-xs text-slate-600 hover:bg-slate-100"
+              >
+                <Info className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Members</span>
+              </Button>
+            </>
           )}
         </div>
       </div>
 
       {isGroup && (
-        <AddMemberDialog
-          isOpen={isAddMemberOpen}
-          onClose={() => setIsAddMemberOpen(false)}
-          conversationId={conversation._id}
-          existingParticipantIds={existingParticipantIds}
-        />
+        <>
+          <AddMemberDialog
+            isOpen={isAddMemberOpen}
+            onClose={() => setIsAddMemberOpen(false)}
+            conversationId={conversation._id}
+            existingParticipantIds={existingParticipantIds}
+          />
+          <GroupMembersDialog
+            isOpen={isMembersOpen}
+            onClose={() => setIsMembersOpen(false)}
+            conversation={conversation}
+            currentUserId={currentUserId}
+            onLeaveGroupSuccess={onBack}
+          />
+        </>
       )}
     </>
   );

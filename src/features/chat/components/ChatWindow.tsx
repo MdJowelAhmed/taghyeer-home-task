@@ -47,7 +47,11 @@ export function ChatWindow({
 
   return (
     <div className="flex-1 flex flex-col h-full bg-slate-50 overflow-hidden">
-      <ChatHeader conversation={conversation} onBack={onBack} />
+      <ChatHeader
+        conversation={conversation}
+        currentUserId={currentUserId}
+        onBack={onBack}
+      />
       <MessageList messages={messages} currentUserId={currentUserId} />
       <MessageInput onSendMessage={handleSend} isLoading={isPending} />
     </div>

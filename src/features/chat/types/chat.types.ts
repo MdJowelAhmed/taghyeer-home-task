@@ -14,6 +14,9 @@ export interface LastMessage {
 export interface Conversation {
   _id: string;
   type: "direct" | "group" | string;
+  name?: string;
+  createdBy?: string;
+  admins?: string[];
   lastMessage?: LastMessage;
   updatedAt: string;
   participant?: Participant;
@@ -32,6 +35,22 @@ export interface CreateConversationResponse {
   _id: string;
   participants: string[];
   createdAt: string;
+}
+
+export interface CreateGroupPayload {
+  name: string;
+  participantIds: string[];
+}
+
+export interface GroupConversationResponse {
+  _id: string;
+  type: "group";
+  name: string;
+  createdBy: string;
+  admins: string[];
+  participants: Participant[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Message {

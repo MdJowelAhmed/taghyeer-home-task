@@ -1,5 +1,6 @@
 import { Conversation } from "../types/chat.types";
 import { UserAvatar } from "./UserAvatar";
+import { Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ConversationItemProps {
@@ -13,8 +14,11 @@ export function ConversationItem({
   isSelected,
   onSelect,
 }: ConversationItemProps) {
-  const name = conversation.participant?.name || "Direct Message";
-  const phone = conversation.participant?.phone;
+  const isGroup = conversation.type === "group";
+  const name = isGroup
+    ? conversation.name || "Group Chat"
+    : conversation.participant?.name || "Direct Message";
+  const phone = !isGroup ? conversation.participant?.phone : undefined;
   const lastMessageText = conversation.lastMessage?.text || "No messages yet";
 
   const formattedTime = conversation.updatedAt
@@ -34,18 +38,31 @@ export function ConversationItem({
           : "hover:bg-slate-100/70"
       )}
     >
-      <UserAvatar name={name} size="md" />
+      {isGroup ? (
+        <div className="h-10 w-10 rounded-full bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+          <Users className="h-5 w-5" />
+        </div>
+      ) : (
+        <UserAvatar name={name} size="md" />
+      )}
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-1 mb-0.5">
-          <h4
-            className={cn(
-              "text-sm font-semibold truncate",
-              isSelected ? "text-indigo-900" : "text-slate-900"
+          <div className="flex items-center gap-1.5 min-w-0">
+            <h4
+              className={cn(
+                "text-sm font-semibold truncate",
+                isSelected ? "text-indigo-900" : "text-slate-900"
+              )}
+            >
+              {name}
+            </h4>
+            {isGroup && (
+              <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-700 font-medium shrink-0">
+                Group
+              </span>
             )}
-          >
-            {name}
-          </h4>
+          </div>
           {formattedTime && (
             <span
               className={cn(

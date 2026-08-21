@@ -1,7 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import { Conversation } from "../types/chat.types";
 import { UserSearch } from "./UserSearch";
 import { ConversationList } from "./ConversationList";
-import { MessageSquare } from "lucide-react";
+import { CreateGroupDialog } from "./CreateGroupDialog";
+import { MessageSquare, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ChatSidebarProps {
   conversations: Conversation[];
@@ -16,11 +21,24 @@ export function ChatSidebar({
   selectedConversationId,
   onSelectConversation,
 }: ChatSidebarProps) {
+  const [isGroupOpen, setIsGroupOpen] = useState(false);
+
   return (
     <aside className="w-full md:w-80 lg:w-96 flex flex-col border-r border-slate-200 bg-white shrink-0 h-full">
-      {/* Top Search bar */}
-      <div className="p-4 border-b border-slate-100">
-        <UserSearch onSelectConversation={onSelectConversation} />
+      {/* Top Search bar & New Group Action */}
+      <div className="p-4 border-b border-slate-100 flex items-center gap-2">
+        <div className="flex-1">
+          <UserSearch onSelectConversation={onSelectConversation} />
+        </div>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setIsGroupOpen(true)}
+          title="Create Group"
+          className="h-10 w-10 shrink-0 rounded-xl text-slate-600 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50"
+        >
+          <Users className="h-4 w-4" />
+        </Button>
       </div>
 
       {/* Header with Counter */}
@@ -45,6 +63,16 @@ export function ChatSidebar({
           onSelectConversation={onSelectConversation}
         />
       </div>
+
+      {/* Create Group Dialog Modal */}
+      <CreateGroupDialog
+        isOpen={isGroupOpen}
+        onClose={() => setIsGroupOpen(false)}
+        onSuccess={(groupId) => {
+          setIsGroupOpen(false);
+          onSelectConversation(groupId);
+        }}
+      />
     </aside>
   );
 }

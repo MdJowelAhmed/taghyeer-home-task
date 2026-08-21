@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { conversationService } from "../services/conversation.service";
-import { CreateConversationPayload } from "../types/chat.types";
+import { CreateConversationPayload, CreateGroupPayload } from "../types/chat.types";
 
 export const CONVERSATIONS_QUERY_KEY = ["chat", "conversations"];
 
@@ -24,6 +24,21 @@ export function useCreateConversation(onSuccessCallback?: (id: string) => void) 
   return useMutation({
     mutationFn: (payload: CreateConversationPayload) =>
       conversationService.createConversation(payload),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY });
+      if (onSuccessCallback && data._id) {
+        onSuccessCallback(data._id);
+      }
+    },
+  });
+}
+
+export function useCreateGroupConversation(onSuccessCallback?: (id: string) => void) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: CreateGroupPayload) =>
+      conversationService.createGroup(payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY });
       if (onSuccessCallback && data._id) {

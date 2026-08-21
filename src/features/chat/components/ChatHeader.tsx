@@ -1,4 +1,4 @@
-import { ArrowLeft, Phone, MoreVertical } from "lucide-react";
+import { ArrowLeft, Phone, MoreVertical, Users } from "lucide-react";
 import { Conversation } from "../types/chat.types";
 import { UserAvatar } from "./UserAvatar";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,16 @@ interface ChatHeaderProps {
 }
 
 export function ChatHeader({ conversation, onBack }: ChatHeaderProps) {
-  const name = conversation.participant?.name || "Direct Chat";
-  const phone = conversation.participant?.phone;
+  const isGroup = conversation.type === "group";
+  const name = isGroup
+    ? conversation.name || "Group Chat"
+    : conversation.participant?.name || "Direct Chat";
+  const phone = !isGroup ? conversation.participant?.phone : undefined;
+
+  const memberCount =
+    Array.isArray(conversation.participants)
+      ? conversation.participants.length
+      : undefined;
 
   return (
     <div className="h-16 px-4 md:px-6 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
@@ -25,16 +33,26 @@ export function ChatHeader({ conversation, onBack }: ChatHeaderProps) {
           <ArrowLeft className="h-5 w-5" />
         </Button>
 
-        <UserAvatar name={name} size="md" isOnline={true} />
+        {isGroup ? (
+          <div className="h-10 w-10 rounded-full bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+            <Users className="h-5 w-5" />
+          </div>
+        ) : (
+          <UserAvatar name={name} size="md" isOnline={true} />
+        )}
 
         <div className="min-w-0">
           <h3 className="text-sm font-bold text-slate-900 truncate">{name}</h3>
-          {phone && (
+          {isGroup ? (
+            <p className="text-xs text-slate-500">
+              {memberCount ? `${memberCount} members` : "Group conversation"}
+            </p>
+          ) : phone ? (
             <p className="text-xs text-slate-400 font-mono flex items-center gap-1">
               <Phone className="h-3 w-3" />
               <span>{phone}</span>
             </p>
-          )}
+          ) : null}
         </div>
       </div>
 

@@ -18,8 +18,7 @@ export function useConversations() {
       const response = await conversationService.getConversations();
       return response.data || [];
     },
-    staleTime: 1000 * 30, // 30 seconds
-    refetchInterval: 10000, // Background poll every 10s until socket is integrated
+    staleTime: 1000 * 60, // 1 minute stale time with real-time socket invalidations
   });
 }
 

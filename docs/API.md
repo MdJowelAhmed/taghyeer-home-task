@@ -525,32 +525,96 @@ Response
   "createdAt": "2026-08-21T13:20:32.757Z"
 }
 Response Fields
+GET /conversations/{id}/messages
+Fetches the message history of a specific conversation (1-to-1 or group).
+
+Request
+Method: GET
+
+Endpoint:
+/conversations/{id}/messages
+
+Authentication
+This endpoint requires a JWT Bearer token.
+Authorization: Bearer <JWT_TOKEN>
+
+Path Parameters:
+Parameter	Type	Required	Description
+id	string	Yes	Conversation ID
+
+Query Parameters:
+Parameter	Type	Required	Description
+limit	number	No	Maximum messages to return (default 50)
+before	string	No	Cursor pagination timestamp/ID
+
+Response
+```json
+{
+  "messages": [
+    {
+      "_id": "6a8879a2e5d6aac9752332a5",
+      "conversation": "6a887630e5d6aac975231069",
+      "sender": "6a88759ce5d6aac975230868",
+      "text": "Hello there!",
+      "createdAt": "2026-08-21T16:15:30.940Z"
+    }
+  ],
+  "hasMore": false
+}
+```
+
+Response Fields
 Field	Type	Description
-_id	string	Unique message ID
-conversation	string	Conversation ID
-sender	string	User ID of the sender
-text	string	Message text
-createdAt	string	Message creation timestamp
+messages	array	List of message objects (sorted newest first)
+hasMore	boolean	Whether older messages exist for pagination
+
 Socket.io
-Socket.io connection details and events will be documented here after they are verified from the provided server specification.
 
-The following information is still pending:
 
-Connection/authentication mechanism
+Connection Handshake
+Connect to the server's root origin (NOT the `/api` base used for REST). The socket lives at the host root (`NEXT_PUBLIC_API_SOCKET_URL`):
 
-Client-to-server events
+```typescript
+const socket = io("https://frontend-task-chatapp.onrender.com", {
+  auth: { token: "<JWT_TOKEN>" },
+  transports: ["websocket", "polling"],
+});
+```
 
-Server-to-client events
+Authentication is required during the handshake. An invalid or missing token is rejected by the server (`Socket connect error: No token provided`).
 
-Room/conversation events
+Client-to-Server Events
 
-Message events
+`message:send`
+Sends a message to a conversation.
+- Payload:
+```json
+{
+  "conversationId": "6a88503fe5d6aac975223f88",
+  "text": "Hello world!"
+}
+```
+- Optional Ack Callback: receives `{ ok: true }` upon success.
 
-Typing events
+Server-to-Client Events
 
-Read/delivery events
+`message:new`
+Fires when a new message arrives in a conversation the user is part of (1-to-1 or group).
+- Payload:
+```json
+{
+  "id": "6a88773be5d6aac975231b34",
+  "conversation": "6a887738e5d6aac975231b0a",
+  "sender": "6a883f82e5d6aac975220e70",
+  "text": "Hello world!",
+  "createdAt": 1787328315263
+}
+```
 
-Online/offline presence events
+`conversation:updated`
+Fires when a group conversation you're in changes (created, renamed, or members/admins changed).
+- Payload: The updated `GroupConversation` object containing current members, admins, and metadata.
+
 
 Environment Variables
 The application uses the following environment variables:

@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useConversations } from "../hooks/useConversations";
+import { useChatSocket } from "../hooks/useChatSocket";
 import { ChatSidebar } from "./ChatSidebar";
 import { ChatWindow } from "./ChatWindow";
 import { EmptyChat } from "./EmptyChat";
@@ -12,6 +13,9 @@ interface ChatLayoutProps {
 }
 
 export function ChatLayout({ currentUserId }: ChatLayoutProps) {
+  // Initialize and synchronize global real-time socket lifecycle
+  useChatSocket();
+
   const [selectedConversationId, setSelectedConversationId] = useState<
     string | null
   >(null);
@@ -66,3 +70,4 @@ export function ChatLayout({ currentUserId }: ChatLayoutProps) {
     </div>
   );
 }
+

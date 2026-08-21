@@ -69,7 +69,23 @@ export interface Message {
   createdAt: string;
 }
 
+export interface MessagesResponse {
+  messages: Message[];
+  hasMore?: boolean;
+}
+
+export interface SocketMessagePayload {
+  id?: string;
+  _id?: string;
+  conversation: string;
+  sender: string;
+  text: string;
+  createdAt: string | number;
+}
+
+
 export interface SendMessagePayload {
   conversationId: string;
   text: string;
 }
+

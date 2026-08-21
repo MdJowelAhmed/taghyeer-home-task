@@ -3,19 +3,39 @@
 import { useEffect, useRef } from "react";
 import { Message } from "../types/chat.types";
 import { MessageBubble } from "./MessageBubble";
-import { MessageSquareDashed } from "lucide-react";
+import { MessageSquareDashed, Loader2 } from "lucide-react";
 
 interface MessageListProps {
   messages: Message[];
   currentUserId?: string;
+  isLoading?: boolean;
 }
 
-export function MessageList({ messages, currentUserId }: MessageListProps) {
+/**
+ * MessageList Component
+ * Displays loading state, empty state, or list of messages with auto-scroll to bottom.
+ */
+export function MessageList({
+  messages,
+  currentUserId,
+  isLoading,
+}: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  if (isLoading && messages.length === 0) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center text-slate-400">
+        <div className="flex items-center gap-2 text-sm text-purple-300">
+          <Loader2 className="h-5 w-5 animate-spin text-[#D72DFC]" />
+          <span>Loading messages...</span>
+        </div>
+      </div>
+    );
+  }
 
   if (messages.length === 0) {
     return (

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Conversation, Message } from "../types/chat.types";
+import { Conversation } from "../types/chat.types";
 import { ChatHeader } from "./ChatHeader";
 import { MessageList } from "./MessageList";
 import { MessageInput } from "./MessageInput";
 import { useSendMessage } from "../hooks/useSendMessage";
+import { useConversationMessages } from "../hooks/useConversationMessages";
 
 interface ChatWindowProps {
   conversation: Conversation;
@@ -13,35 +13,33 @@ interface ChatWindowProps {
   onBack: () => void;
 }
 
+/**
+ * ChatWindow component managing active conversation header,
+ * real-time message history stream, and message composer.
+ *
+ * Architecture Flow: UI Components -> Custom Hooks -> Services -> apiFetch / Socket
+ */
 export function ChatWindow({
   conversation,
   currentUserId,
   onBack,
 }: ChatWindowProps) {
-  // Local messages state for sending and display until message history API is verified
-  const [messages, setMessages] = useState<Message[]>(() => {
-    if (conversation.lastMessage?.text && conversation.lastMessage?._id) {
-      return [
-        {
-          _id: conversation.lastMessage._id,
-          conversation: conversation._id,
-          sender: conversation.lastMessage.sender || "",
-          text: conversation.lastMessage.text,
-          createdAt: conversation.lastMessage.createdAt || conversation.updatedAt,
-        },
-      ];
-    }
-    return [];
-  });
+  // Real-time messages stream with historical persistence across page reloads
+  const { messages, isLoading: isMessagesLoading, addMessage } =
+    useConversationMessages(conversation._id);
 
-  const { mutate: sendMessage, isPending } = useSendMessage((sentMsg) => {
-    setMessages((prev) => [...prev, sentMsg]);
-  });
+  // Send message mutation handler
+  const { mutate: sendMessage, isPending: isSending } = useSendMessage(
+    (sentMsg) => {
+      addMessage(sentMsg);
+    }
+  );
 
   const handleSend = (text: string) => {
+    if (!text.trim()) return;
     sendMessage({
       conversationId: conversation._id,
-      text,
+      text: text.trim(),
     });
   };
 
@@ -52,8 +50,12 @@ export function ChatWindow({
         currentUserId={currentUserId}
         onBack={onBack}
       />
-      <MessageList messages={messages} currentUserId={currentUserId} />
-      <MessageInput onSendMessage={handleSend} isLoading={isPending} />
+      <MessageList
+        messages={messages}
+        currentUserId={currentUserId}
+        isLoading={isMessagesLoading}
+      />
+      <MessageInput onSendMessage={handleSend} isLoading={isSending} />
     </div>
   );
 }

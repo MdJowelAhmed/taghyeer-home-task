@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { UserPlus, X, Plus, Check, Loader2 } from "lucide-react";
 import { useUserSearch } from "../hooks/useUserSearch";
 import { useAddParticipants } from "../hooks/useConversations";
@@ -26,13 +26,21 @@ export function AddMemberDialog({
 
   const { data: searchResults, isLoading } = useUserSearch(searchQuery);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setSearchQuery("");
     setSelectedUsers([]);
     onClose();
-  };
+  }, [onClose]);
 
   const { mutate: addParticipants, isPending } = useAddParticipants(handleClose);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
+    };
+    if (isOpen) window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, handleClose]);
 
   const toggleUser = (user: SearchUser) => {
     setSelectedUsers((prev) =>
@@ -59,8 +67,14 @@ export function AddMemberDialog({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div
+      onClick={handleClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+      >
         <div className="p-4 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">

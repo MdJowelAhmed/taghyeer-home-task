@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Users, X, UserMinus, ShieldCheck, LogOut, Loader2 } from "lucide-react";
 import { Conversation, Participant } from "../types/chat.types";
 import { useRemoveParticipant } from "../hooks/useConversations";
@@ -22,6 +23,14 @@ export function GroupMembersDialog({
   onLeaveGroupSuccess,
 }: GroupMembersDialogProps) {
   const { mutate: removeMember, isPending } = useRemoveParticipant();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -49,8 +58,14 @@ export function GroupMembersDialog({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+      >
         <div className="p-4 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">

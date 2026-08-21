@@ -44,19 +44,19 @@ export function ChatHeader({
 
   return (
     <>
-      <div className="h-16 px-4 md:px-6 border-b border-purple-500/15 bg-brand-sidebar/80 backdrop-blur-xl flex items-center justify-between shrink-0 z-10">
+      <div className="h-16 px-4 md:px-6 border-b border-purple-500/15 bg-brand-sidebar/90 backdrop-blur-xl flex items-center justify-between shrink-0 z-10">
         <div className="flex items-center gap-3 min-w-0">
           <Button
             variant="ghost"
             size="icon"
             onClick={onBack}
-            className="md:hidden -ml-2 text-slate-300 hover:text-white"
+            className="md:hidden -ml-2 text-brand-text hover:text-purple-500"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
 
           {isGroup ? (
-            <div className="h-10 w-10 rounded-full bg-brand-gradient text-white flex items-center justify-center shrink-0 shadow-md shadow-purple-900/30">
+            <div className="h-10 w-10 rounded-full bg-brand-gradient text-white flex items-center justify-center shrink-0 shadow-md shadow-purple-900/20">
               <Users className="h-5 w-5" />
             </div>
           ) : (
@@ -64,13 +64,13 @@ export function ChatHeader({
           )}
 
           <div className="min-w-0">
-            <h3 className="text-sm font-bold text-white truncate">{name}</h3>
+            <h3 className="text-sm font-bold text-brand-text truncate">{name}</h3>
             {isGroup ? (
-              <p className="text-xs text-purple-300/80">
+              <p className="text-xs text-purple-600 dark:text-purple-300">
                 {memberCount ? `${memberCount} members` : "Group conversation"}
               </p>
             ) : phone ? (
-              <p className="text-xs text-slate-400 font-mono flex items-center gap-1">
+              <p className="text-xs text-brand-muted font-mono flex items-center gap-1">
                 <Phone className="h-3 w-3" />
                 <span>{phone}</span>
               </p>
@@ -86,7 +86,7 @@ export function ChatHeader({
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsRenameOpen(true)}
-                  className="flex items-center gap-1 text-xs text-slate-300 hover:text-white hover:bg-purple-950/40"
+                  className="flex items-center gap-1 text-xs text-brand-text hover:text-purple-500 hover:bg-purple-950/10 dark:hover:bg-purple-950/40"
                   title="Rename Group"
                 >
                   <Edit3 className="h-3.5 w-3.5" />
@@ -98,7 +98,7 @@ export function ChatHeader({
                 variant="outline"
                 size="sm"
                 onClick={() => setIsAddMemberOpen(true)}
-                className="flex items-center gap-1 text-xs text-purple-300 hover:text-white border-purple-500/30 bg-brand-card/60 hover:bg-brand-gradient hover:border-transparent"
+                className="flex items-center gap-1 text-xs text-purple-600 dark:text-purple-300 hover:text-white border-purple-500/30 bg-brand-card/60 hover:bg-brand-gradient hover:border-transparent"
               >
                 <UserPlus className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline">Add</span>
@@ -108,7 +108,7 @@ export function ChatHeader({
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsMembersOpen(true)}
-                className="flex items-center gap-1 text-xs text-slate-300 hover:text-white hover:bg-purple-950/40"
+                className="flex items-center gap-1 text-xs text-brand-text hover:text-purple-500 hover:bg-purple-950/10 dark:hover:bg-purple-950/40"
               >
                 <Info className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline">Members</span>

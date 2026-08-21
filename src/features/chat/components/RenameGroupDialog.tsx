@@ -50,11 +50,11 @@ export function RenameGroupDialog({
   return (
     <div
       onClick={handleClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md bg-brand-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/25 overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-100"
+        className="w-full max-w-md bg-brand-card backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/25 overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-brand-text"
       >
         <div className="p-4 border-b border-purple-500/15 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -62,24 +62,24 @@ export function RenameGroupDialog({
               <Edit3 className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white">Rename Group</h3>
-              <p className="text-xs text-slate-400">Change this group&apos;s display name</p>
+              <h3 className="text-sm font-bold text-brand-text">Rename Group</h3>
+              <p className="text-xs text-brand-muted">Change this group&apos;s display name</p>
             </div>
           </div>
-          <button onClick={handleClose} className="text-slate-400 hover:text-white p-1">
+          <button onClick={handleClose} className="text-brand-muted hover:text-brand-text p-1">
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-300">Group Name</label>
+            <label className="text-xs font-semibold text-brand-text">Group Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter new group name"
-              className="w-full h-9 px-3 rounded-xl bg-brand-sidebar border border-purple-500/20 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-gradient-from"
+              className="w-full h-9 px-3 rounded-xl bg-brand-sidebar border border-purple-500/20 text-sm text-brand-text placeholder:text-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-gradient-from"
               required
             />
           </div>

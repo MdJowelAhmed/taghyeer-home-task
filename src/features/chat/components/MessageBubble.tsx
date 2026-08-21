@@ -25,8 +25,8 @@ export function MessageBubble({ message, isSelf }: MessageBubbleProps) {
         className={cn(
           "max-w-[78%] sm:max-w-[65%] rounded-2xl px-4 py-2.5 shadow-md text-sm break-words relative transition-all",
           isSelf
-            ? "bg-brand-gradient text-white shadow-purple-950/40 rounded-br-xs"
-            : "bg-brand-card/90 border border-purple-500/20 text-slate-100 shadow-purple-950/30 rounded-bl-xs"
+            ? "bg-brand-gradient text-white shadow-purple-950/20 rounded-br-xs"
+            : "bg-brand-card/90 border border-purple-500/20 text-brand-text shadow-sm rounded-bl-xs"
         )}
       >
         <p className="leading-relaxed whitespace-pre-wrap">{message.text}</p>
@@ -34,7 +34,7 @@ export function MessageBubble({ message, isSelf }: MessageBubbleProps) {
           <div
             className={cn(
               "text-[10px] mt-1 text-right select-none font-mono",
-              isSelf ? "text-purple-200/90" : "text-slate-400"
+              isSelf ? "text-purple-100/90" : "text-brand-muted"
             )}
           >
             {formattedTime}

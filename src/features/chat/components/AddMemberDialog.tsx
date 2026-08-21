@@ -69,11 +69,11 @@ export function AddMemberDialog({
   return (
     <div
       onClick={handleClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md bg-brand-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/25 overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-100"
+        className="w-full max-w-md bg-brand-card backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/25 overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-brand-text"
       >
         <div className="p-4 border-b border-purple-500/15 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -81,11 +81,11 @@ export function AddMemberDialog({
               <UserPlus className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white">Add Members</h3>
-              <p className="text-xs text-slate-400">Add people to this group</p>
+              <h3 className="text-sm font-bold text-brand-text">Add Members</h3>
+              <p className="text-xs text-brand-muted">Add people to this group</p>
             </div>
           </div>
-          <button onClick={handleClose} className="text-slate-400 hover:text-white p-1">
+          <button onClick={handleClose} className="text-brand-muted hover:text-brand-text p-1">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -96,7 +96,7 @@ export function AddMemberDialog({
               {selectedUsers.map((u) => (
                 <span
                   key={u._id}
-                  className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-full bg-purple-500/20 text-purple-200 text-xs font-medium border border-purple-500/30"
+                  className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-200 text-xs font-medium border border-purple-500/30"
                 >
                   <span>{u.name}</span>
                   <button type="button" onClick={() => toggleUser(u)}>
@@ -113,10 +113,10 @@ export function AddMemberDialog({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search user name..."
-              className="w-full h-9 px-3 rounded-xl bg-brand-sidebar border border-purple-500/20 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-gradient-from"
+              className="w-full h-9 px-3 rounded-xl bg-brand-sidebar border border-purple-500/20 text-sm text-brand-text placeholder:text-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-gradient-from"
             />
             {isLoading && (
-              <div className="flex items-center gap-1 text-xs text-purple-300 pt-1">
+              <div className="flex items-center gap-1 text-xs text-purple-600 dark:text-purple-300 pt-1">
                 <Loader2 className="h-3 w-3 animate-spin text-brand-gradient-to" />
                 <span>Searching...</span>
               </div>
@@ -130,19 +130,19 @@ export function AddMemberDialog({
                       key={u._id}
                       type="button"
                       onClick={() => toggleUser(u)}
-                      className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-purple-950/40 text-left"
+                      className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-purple-500/10 dark:hover:bg-purple-950/40 text-left"
                     >
                       <div className="flex items-center gap-2 min-w-0">
                         <UserAvatar name={u.name} size="sm" />
                         <div className="truncate">
-                          <p className="text-xs font-semibold text-slate-200 truncate">{u.name}</p>
-                          <p className="text-[10px] text-slate-400 font-mono">{u.phone}</p>
+                          <p className="text-xs font-semibold text-brand-text truncate">{u.name}</p>
+                          <p className="text-[10px] text-brand-muted font-mono">{u.phone}</p>
                         </div>
                       </div>
                       {isSelected ? (
                         <Check className="h-4 w-4 text-brand-gradient-to" />
                       ) : (
-                        <Plus className="h-4 w-4 text-slate-400" />
+                        <Plus className="h-4 w-4 text-brand-muted" />
                       )}
                     </button>
                   );

@@ -35,7 +35,7 @@ export function ChatSidebar({
           size="icon"
           onClick={() => setIsGroupOpen(true)}
           title="Create Group"
-          className="h-10 w-10 shrink-0 rounded-xl text-purple-300 hover:text-white hover:bg-brand-gradient hover:border-transparent transition-all"
+          className="h-10 w-10 shrink-0 rounded-xl text-purple-600 dark:text-purple-300 hover:text-white hover:bg-brand-gradient hover:border-transparent transition-all"
         >
           <Users className="h-4 w-4" />
         </Button>
@@ -45,11 +45,11 @@ export function ChatSidebar({
       <div className="px-4 py-3 flex items-center justify-between border-b border-purple-500/10">
         <div className="flex items-center gap-2">
           <MessageSquare className="h-4 w-4 text-brand-gradient-to" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-brand-muted">
             Conversations
           </h3>
         </div>
-        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30">
+        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-300 border border-purple-500/30">
           {conversations.length}
         </span>
       </div>

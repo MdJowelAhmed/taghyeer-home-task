@@ -38,13 +38,13 @@ export function MessageInput({ onSendMessage, isLoading }: MessageInputProps) {
           onKeyDown={handleKeyDown}
           placeholder="Type a message..."
           disabled={isLoading}
-          className="flex-1 h-11 px-4 rounded-xl bg-brand-card/80 border border-purple-500/25 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-gradient-from focus:border-transparent transition-all"
+          className="flex-1 h-11 px-4 rounded-xl bg-brand-card/80 border border-purple-500/25 text-sm text-brand-text placeholder:text-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-gradient-from focus:border-transparent transition-all"
         />
 
         <Button
           type="submit"
           disabled={!text.trim() || isLoading}
-          className="h-11 w-11 p-0 rounded-xl bg-brand-gradient hover:brightness-110 text-white shrink-0 shadow-lg shadow-purple-950/60 transition-all"
+          className="h-11 w-11 p-0 rounded-xl bg-brand-gradient hover:brightness-110 text-white shrink-0 shadow-lg shadow-purple-950/30 transition-all"
         >
           {isLoading ? (
             <Loader2 className="h-5 w-5 animate-spin" />

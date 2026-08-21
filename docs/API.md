@@ -1,52 +1,41 @@
-API Documentation
 
+
+
+API Documentation
 REST API and Socket.io contract used by the Chat Application.
 
 Base URLs
-
 REST API
-
 All REST endpoints are relative to:
 
 NEXT_PUBLIC_API_BASE_URL
-
 Current value:
 
 https://frontend-task-chatapp.onrender.com/api
-
 Socket.io
-
 Socket.io connection URL:
 
 NEXT_PUBLIC_API_SOCKET_URL
-
 Current value:
 
 https://frontend-task-chatapp.onrender.com
-
 Authentication
-
 POST /auth/login
-
 Authenticates a user using their phone number and name.
 
 Request
-
 Method: POST
 
 Endpoint:
 
 /auth/login
-
 Request Body:
 
 {
   "phone": "01478523698",
   "name": "Jowel"
 }
-
 Response
-
 {
   "token": "<JWT_TOKEN>",
   "user": {
@@ -56,112 +45,41 @@ Response
     "createdAt": "2026-08-21T12:07:30.838Z"
   }
 }
-
 Response Fields
-
-Field
-
-Type
-
-Description
-
-token
-
-string
-
-JWT authentication token
-
-user
-
-object
-
-Authenticated user information
-
-user._id
-
-string
-
-Unique user ID
-
-user.name
-
-string
-
-User name
-
-user.phone
-
-string
-
-User phone number
-
-user.createdAt
-
-string
-
-User creation timestamp
-
+Field	Type	Description
+token	string	JWT authentication token
+user	object	Authenticated user information
+user._id	string	Unique user ID
+user.name	string	User name
+user.phone	string	User phone number
+user.createdAt	string	User creation timestamp
 GET /auth/me
-
 Returns the currently authenticated user's information.
 
 Request
-
 Method: GET
 
 Endpoint:
 
 /auth/me
-
 Authentication
-
 This endpoint requires a JWT Bearer token.
 
 Authorization: Bearer <JWT_TOKEN>
-
 Response
-
 {
   "_id": "6a883f82e5d6aac975220e70",
   "name": "Jowel",
   "phone": "01478523698",
   "createdAt": "2026-08-21T12:07:30.838Z"
 }
-
 Response Fields
-
-Field
-
-Type
-
-Description
-
-_id
-
-string
-
-Unique user ID
-
-name
-
-string
-
-User name
-
-phone
-
-string
-
-User phone number
-
-createdAt
-
-string
-
-User creation timestamp
-
+Field	Type	Description
+_id	string	Unique user ID
+name	string	User name
+phone	string	User phone number
+createdAt	string	User creation timestamp
 Error Response — No Token
-
 Status: 400
 
 {
@@ -170,45 +88,22 @@ Status: 400
     "code": "NO_TOKEN"
   }
 }
-
 Users
-
 GET /users/search
-
 Searches for users by name or supported search query.
 
 Request
-
 Method: GET
 
 Endpoint:
 
 /users/search
-
 Query Parameters
-
-Parameter
-
-Type
-
-Required
-
-Description
-
-q
-
-string
-
-Yes
-
-Search query
-
+Parameter	Type	Required	Description
+q	string	Yes	Search query
 Example
-
 /users/search?q=Jow
-
 Response
-
 [
   {
     "_id": "6a883f82e5d6aac975220e70",
@@ -216,43 +111,118 @@ Response
     "phone": "01478523698"
   }
 ]
-
 Response Fields
-
-Field
-
-Type
-
-Description
-
-_id
-
-string
-
-Unique user ID
-
-name
-
-string
-
-User name
-
-phone
-
-string
-
-User phone number
-
+Field	Type	Description
+_id	string	Unique user ID
+name	string	User name
+phone	string	User phone number
 Conversations
+GET /conversations
+Returns the conversations available to the authenticated user.
 
-Conversation-related REST endpoints will be documented here after they are verified from the provided API.
+Request
+Method: GET
 
+Endpoint:
+
+/conversations
+Authentication
+This endpoint requires a JWT Bearer token.
+
+Authorization: Bearer <JWT_TOKEN>
+Response
+{
+  "data": [
+    {
+      "_id": "6a88503fe5d6aac975223f88",
+      "type": "direct",
+      "lastMessage": {},
+      "updatedAt": "2026-08-21T13:18:55.986Z",
+      "participant": {
+        "_id": "6a8833dae5d6aac97521f016",
+        "name": "Kyle Reese",
+        "phone": "+12025550103"
+      }
+    }
+  ]
+}
+Response Fields
+Field	Type	Description
+data	array	List of conversations
+data[]._id	string	Unique conversation ID
+data[].type	string	Conversation type, currently direct
+data[].lastMessage	object	Last message in the conversation
+data[].updatedAt	string	Last conversation update timestamp
+data[].participant	object	Other participant in a direct conversation
+data[].participant._id	string	Participant user ID
+data[].participant.name	string	Participant name
+data[].participant.phone	string	Participant phone number
+POST /conversations
+Creates a direct conversation with another user.
+
+Request
+Method: POST
+
+Endpoint:
+
+/conversations
+Authentication
+This endpoint requires a JWT Bearer token.
+
+Authorization: Bearer <JWT_TOKEN>
+Request Body
+{
+  "userId": "6a8833dae5d6aac97521f016"
+}
+Response
+{
+  "_id": "6a88503fe5d6aac975223f88",
+  "participants": [
+    "6a8844fce5d6aac975221b2c",
+    "6a8833dae5d6aac97521f016"
+  ],
+  "createdAt": "2026-08-21T13:18:55.986Z"
+}
+Response Fields
+Field	Type	Description
+_id	string	Unique conversation ID
+participants	string[]	User IDs participating in the conversation
+createdAt	string	Conversation creation timestamp
 Messages
+POST /messages
+Sends a message to a conversation.
 
-Message-related REST endpoints will be documented here after they are verified from the provided API.
+Request
+Method: POST
 
+Endpoint:
+
+/messages
+Authentication
+This endpoint requires a JWT Bearer token.
+
+Authorization: Bearer <JWT_TOKEN>
+Request Body
+{
+  "conversationId": "6a88503fe5d6aac975223f88",
+  "text": "Hi!"
+}
+Response
+{
+  "_id": "6a8850a0e5d6aac975224077",
+  "conversation": "6a88503fe5d6aac975223f88",
+  "sender": "6a8844fce5d6aac975221b2c",
+  "text": "Hi!",
+  "createdAt": "2026-08-21T13:20:32.757Z"
+}
+Response Fields
+Field	Type	Description
+_id	string	Unique message ID
+conversation	string	Conversation ID
+sender	string	User ID of the sender
+text	string	Message text
+createdAt	string	Message creation timestamp
 Socket.io
-
 Socket.io connection details and events will be documented here after they are verified from the provided server specification.
 
 The following information is still pending:
@@ -274,26 +244,14 @@ Read/delivery events
 Online/offline presence events
 
 Environment Variables
-
 The application uses the following environment variables:
 
 NEXT_PUBLIC_API_BASE_URL=https://frontend-task-chatapp.onrender.com/api
 NEXT_PUBLIC_API_SOCKET_URL=https://frontend-task-chatapp.onrender.com
-
-Variable
-
-Purpose
-
-NEXT_PUBLIC_API_BASE_URL
-
-Base URL for REST API requests
-
-NEXT_PUBLIC_API_SOCKET_URL
-
-Base URL for Socket.io connection
-
+Variable	Purpose
+NEXT_PUBLIC_API_BASE_URL	Base URL for REST API requests
+NEXT_PUBLIC_API_SOCKET_URL	Base URL for Socket.io connection
 Notes
-
 API URLs must not be hardcoded inside feature components.
 
 REST API communication should go through the application's API/service layer.

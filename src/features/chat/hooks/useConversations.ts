@@ -6,6 +6,7 @@ import {
   CreateConversationPayload,
   CreateGroupPayload,
   AddParticipantsPayload,
+  RenameGroupPayload,
 } from "../types/chat.types";
 
 export const CONVERSATIONS_QUERY_KEY = ["chat", "conversations"];
@@ -103,6 +104,26 @@ export function usePromoteAdmin(onSuccessCallback?: () => void) {
       conversationId: string;
       userId: string;
     }) => conversationService.promoteAdmin(conversationId, userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY });
+      if (onSuccessCallback) {
+        onSuccessCallback();
+      }
+    },
+  });
+}
+
+export function useRenameGroup(onSuccessCallback?: () => void) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      conversationId,
+      payload,
+    }: {
+      conversationId: string;
+      payload: RenameGroupPayload;
+    }) => conversationService.renameGroup(conversationId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY });
       if (onSuccessCallback) {

@@ -440,6 +440,63 @@ participants	object[]	List of participant user objects
 createdAt	string	Creation timestamp
 updatedAt	string	Last update timestamp
 
+PATCH /conversations/{id}
+Renames a group conversation (admins only).
+
+Request
+Method: PATCH
+
+Endpoint:
+/conversations/{id}
+
+Authentication
+This endpoint requires a JWT Bearer token.
+Authorization: Bearer <JWT_TOKEN>
+
+Path Parameters:
+Parameter	Type	Required	Description
+id	string	Yes	The group conversation ID
+
+Request Body:
+```json
+{
+  "name": "Renamed Team"
+}
+```
+
+Response:
+```json
+{
+  "_id": "6a885fcce5d6aac975228715",
+  "type": "group",
+  "name": "Renamed Team",
+  "createdBy": "6a8844fce5d6aac975221b2c",
+  "admins": [
+    "6a8844fce5d6aac975221b2c"
+  ],
+  "participants": [
+    {
+      "_id": "6a8844fce5d6aac975221b2c",
+      "name": "Jowel",
+      "phone": "0107852398"
+    }
+  ],
+  "createdAt": "2026-08-21T14:25:16.314Z",
+  "updatedAt": "2026-08-21T14:55:00.000Z"
+}
+```
+
+Response Fields
+Field	Type	Description
+_id	string	Unique group conversation ID
+type	string	Conversation type, "group"
+name	string	Updated group name
+createdBy	string	User ID of the creator
+admins	string[]	List of admin user IDs
+participants	object[]	List of participant user objects
+createdAt	string	Creation timestamp
+updatedAt	string	Last update timestamp
+
 Messages
 POST /messages
 Sends a message to a conversation.

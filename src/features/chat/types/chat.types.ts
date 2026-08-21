@@ -46,6 +46,10 @@ export interface AddParticipantsPayload {
   userIds: string[];
 }
 
+export interface RenameGroupPayload {
+  name: string;
+}
+
 export interface GroupConversationResponse {
   _id: string;
   type: "group";

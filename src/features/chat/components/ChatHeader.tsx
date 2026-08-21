@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Phone, Users, UserPlus, Info } from "lucide-react";
+import { ArrowLeft, Phone, Users, UserPlus, Info, Edit3 } from "lucide-react";
 import { Conversation } from "../types/chat.types";
 import { UserAvatar } from "./UserAvatar";
 import { AddMemberDialog } from "./AddMemberDialog";
 import { GroupMembersDialog } from "./GroupMembersDialog";
+import { RenameGroupDialog } from "./RenameGroupDialog";
 import { Button } from "@/components/ui/button";
 
 interface ChatHeaderProps {
@@ -21,6 +22,7 @@ export function ChatHeader({
 }: ChatHeaderProps) {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [isMembersOpen, setIsMembersOpen] = useState(false);
+  const [isRenameOpen, setIsRenameOpen] = useState(false);
 
   const isGroup = conversation.type === "group";
   const name = isGroup
@@ -35,6 +37,10 @@ export function ChatHeader({
   const existingParticipantIds = Array.isArray(conversation.participants)
     ? conversation.participants.map((p) => (typeof p === "string" ? p : p._id))
     : [];
+
+  const isAdmin = isGroup && currentUserId
+    ? (conversation.admins || []).includes(currentUserId)
+    : false;
 
   return (
     <>
@@ -75,6 +81,19 @@ export function ChatHeader({
         <div className="flex items-center gap-1.5">
           {isGroup && (
             <>
+              {isAdmin && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsRenameOpen(true)}
+                  className="flex items-center gap-1 text-xs text-slate-600 hover:bg-slate-100"
+                  title="Rename Group"
+                >
+                  <Edit3 className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Rename</span>
+                </Button>
+              )}
+
               <Button
                 variant="outline"
                 size="sm"
@@ -113,6 +132,12 @@ export function ChatHeader({
             conversation={conversation}
             currentUserId={currentUserId}
             onLeaveGroupSuccess={onBack}
+          />
+          <RenameGroupDialog
+            isOpen={isRenameOpen}
+            onClose={() => setIsRenameOpen(false)}
+            conversationId={conversation._id}
+            currentName={conversation.name || ""}
           />
         </>
       )}

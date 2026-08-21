@@ -5,6 +5,7 @@ import {
   CreateConversationResponse,
   CreateGroupPayload,
   AddParticipantsPayload,
+  RenameGroupPayload,
   GroupConversationResponse,
 } from "../types/chat.types";
 
@@ -55,6 +56,16 @@ export const conversationService = {
       {
         method: "POST",
         body: { userId },
+      }
+    );
+  },
+
+  renameGroup: (conversationId: string, payload: RenameGroupPayload) => {
+    return apiFetch<GroupConversationResponse>(
+      `/conversations/${conversationId}`,
+      {
+        method: "PATCH",
+        body: payload,
       }
     );
   },

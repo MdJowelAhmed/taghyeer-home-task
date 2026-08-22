@@ -177,8 +177,16 @@ export function MessageList({
           const senderName = isSelf ? currentUser?.name || "You" : pInfo?.name || (typeof msg.sender === "object" ? (msg.sender as any).name : "User");
           const senderPhone = isSelf ? currentUser?.phone || "" : pInfo?.phone || (typeof msg.sender === "object" ? (msg.sender as any).phone : "");
           return (
-            <MessageBubble key={msg._id} message={msg} isSelf={isSelf} senderId={senderId}
-              senderName={senderName} senderPhone={senderPhone} onSelectUser={onSelectUser} />
+            <MessageBubble
+              key={msg._id}
+              message={msg}
+              isSelf={isSelf}
+              isGroup={conversation?.type === "group"}
+              senderId={senderId}
+              senderName={senderName}
+              senderPhone={senderPhone}
+              onSelectUser={onSelectUser}
+            />
           );
         })}
         <div ref={bottomRef} />

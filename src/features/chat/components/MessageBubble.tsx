@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 interface MessageBubbleProps {
   message: Message;
   isSelf: boolean;
+  isGroup?: boolean;
   senderId?: string;
   senderName?: string;
   senderPhone?: string;
@@ -13,11 +14,14 @@ interface MessageBubbleProps {
 
 /**
  * MessageBubble Component displaying message text, formatted timestamp,
- * and sender UserAvatar with name initials & hover tooltip (name + phone).
+ * and sender UserAvatar with name initials.
+ * In Group Chats: shows sender name above bubble and hover tooltip/click-to-DM on avatar.
+ * In 1-on-1 Chats: cleaner bubble without redundant name header or tooltips.
  */
 export function MessageBubble({
   message,
   isSelf,
+  isGroup = false,
   senderId,
   senderName = "User",
   senderPhone,
@@ -30,8 +34,10 @@ export function MessageBubble({
       })
     : "";
 
+  const showGroupMeta = isGroup && !isSelf;
+
   const handleAvatarClick = () => {
-    if (!isSelf && onSelectUser && senderId) {
+    if (showGroupMeta && onSelectUser && senderId) {
       onSelectUser({ _id: senderId, name: senderName, phone: senderPhone });
     }
   };
@@ -48,9 +54,9 @@ export function MessageBubble({
           name={senderName}
           phone={senderPhone}
           size="sm"
-          showTooltip={true}
+          showTooltip={showGroupMeta}
           alignTooltip="left"
-          onClick={handleAvatarClick}
+          onClick={showGroupMeta ? handleAvatarClick : undefined}
           className="mb-0.5"
         />
       )}
@@ -63,7 +69,7 @@ export function MessageBubble({
             : "bg-brand-card/90 border border-purple-500/20 text-brand-text shadow-sm rounded-bl-xs"
         )}
       >
-        {!isSelf && senderName && (
+        {showGroupMeta && senderName && (
           <p className="text-[11px] font-bold text-fuchsia-400 mb-0.5 select-none">
             {senderName}
           </p>

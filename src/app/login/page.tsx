@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { LoginForm } from "@/features/auth/components/LoginForm";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Metadata } from "next";
+import loginImg from "@/assets/login.jpg";
 
 export const metadata: Metadata = {
   title: "Login | Taghyeer Digital Systems",
@@ -8,11 +10,22 @@ export const metadata: Metadata = {
 };
 
 /**
- * Login Page with Taghyeer dark/light theme, cyber mesh lighting, and glassmorphic card container.
+ * Login Page with Taghyeer dark/light theme, cyber mesh lighting, and login.jpg background image.
  */
 export default function LoginPage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-brand-bg relative overflow-hidden">
+      {/* Background Image Overlay */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <Image
+          src={loginImg}
+          alt="Login Network Background"
+          fill
+          priority
+          className="object-cover object-center opacity-40 mix-blend-screen scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020618]/70 via-[#020618]/40 to-[#020618]" />
+      </div>
       {/* Top Bar with Theme Toggle */}
       <div className="absolute top-4 right-4 z-20">
         <ThemeToggle />

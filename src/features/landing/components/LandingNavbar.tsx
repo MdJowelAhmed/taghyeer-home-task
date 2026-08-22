@@ -28,7 +28,7 @@ export function LandingNavbar() {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-[#030712]/90 backdrop-blur-2xl border-b border-purple-500/20 py-3 shadow-2xl shadow-purple-950/40"
+          ? "bg-[#030712]/90 backdrop-blur-2xl py-3 shadow-2xl shadow-purple-950/40"
           : "bg-transparent py-5"
       }`}
     >

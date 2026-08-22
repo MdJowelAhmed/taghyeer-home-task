@@ -16,7 +16,7 @@ import heroImg from "@/assets/hero.jpg";
  */
 export function LandingHero() {
   return (
-    <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden bg-[#030712]">
+    <section className="relative min-h-screen flex items-center pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden bg-[#030712]">
       {/* Background Image with Mesh Gradient Overlay */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image

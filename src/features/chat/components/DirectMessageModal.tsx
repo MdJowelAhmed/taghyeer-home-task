@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { MessageSquare, X, ArrowRight } from "lucide-react";
 import { Loader } from "@/components/ui/Loader";
 import { useCreateConversation } from "../hooks/useConversations";
@@ -31,6 +32,12 @@ export function DirectMessageModal({
   targetUser,
   onSelectConversation,
 }: DirectMessageModalProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { mutate: createConversation, isPending: isCreating } =
     useCreateConversation((newId) => {
       onSelectConversation(newId);
@@ -45,13 +52,13 @@ export function DirectMessageModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen || !targetUser) return null;
+  if (!isOpen || !targetUser || !mounted) return null;
 
   const handleStartChat = () => {
     createConversation({ userId: targetUser._id });
   };
 
-  return (
+  return createPortal(
     <div
       onClick={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 text-brand-text"
@@ -116,6 +123,7 @@ export function DirectMessageModal({
           </Button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

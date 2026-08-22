@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Users, X, UserMinus, ShieldCheck, LogOut, ShieldPlus, MessageSquare } from "lucide-react";
 import { Loader } from "@/components/ui/Loader";
 import { Conversation, Participant } from "../types/chat.types";
@@ -25,8 +26,13 @@ export function GroupMembersDialog({
   onLeaveGroupSuccess,
   onSelectUser,
 }: GroupMembersDialogProps) {
+  const [mounted, setMounted] = useState(false);
   const { mutate: removeMember, isPending: isRemoving } = useRemoveParticipant();
   const { mutate: promoteAdmin, isPending: isPromoting } = usePromoteAdmin();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -36,7 +42,7 @@ export function GroupMembersDialog({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const participants = (Array.isArray(conversation.participants)
     ? conversation.participants.filter(
@@ -69,7 +75,7 @@ export function GroupMembersDialog({
     }
   };
 
-  return (
+  return createPortal(
     <div
       onClick={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
@@ -180,6 +186,7 @@ export function GroupMembersDialog({
           </Button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

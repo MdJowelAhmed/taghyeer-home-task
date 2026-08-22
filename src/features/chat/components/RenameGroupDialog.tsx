@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { Edit3, X } from "lucide-react";
 import { Loader } from "@/components/ui/Loader";
 import { useRenameGroup } from "../hooks/useConversations";
@@ -19,7 +20,12 @@ export function RenameGroupDialog({
   conversationId,
   currentName,
 }: RenameGroupDialogProps) {
+  const [mounted, setMounted] = useState(false);
   const [name, setName] = useState(currentName);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleClose = useCallback(() => {
     setName(currentName);
@@ -46,9 +52,9 @@ export function RenameGroupDialog({
     });
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
+  return createPortal(
     <div
       onClick={handleClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
@@ -100,6 +106,7 @@ export function RenameGroupDialog({
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

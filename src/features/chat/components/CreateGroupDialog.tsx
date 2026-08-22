@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { Users, X, Plus, Check } from "lucide-react";
 import { Loader } from "@/components/ui/Loader";
 import { useUserSearch } from "../hooks/useUserSearch";
@@ -16,9 +17,14 @@ interface CreateGroupDialogProps {
 }
 
 export function CreateGroupDialog({ isOpen, onClose, onSuccess }: CreateGroupDialogProps) {
+  const [mounted, setMounted] = useState(false);
   const [name, setName] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUsers, setSelectedUsers] = useState<SearchUser[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { data: searchResults, isLoading } = useUserSearch(searchQuery);
 
@@ -54,9 +60,9 @@ export function CreateGroupDialog({ isOpen, onClose, onSuccess }: CreateGroupDia
     createGroup({ name: name.trim(), participantIds: selectedUsers.map((u) => u._id) });
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
+  return createPortal(
     <div onClick={handleClose} className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
       <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md bg-brand-card rounded-2xl shadow-2xl border border-purple-500/25 overflow-hidden text-brand-text">
         <div className="p-4 border-b border-purple-500/15 flex items-center justify-between">
@@ -126,6 +132,7 @@ export function CreateGroupDialog({ isOpen, onClose, onSuccess }: CreateGroupDia
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

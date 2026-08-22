@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { UserPlus, X, Plus, Check } from "lucide-react";
 import { Loader } from "@/components/ui/Loader";
 import { useUserSearch } from "../hooks/useUserSearch";
@@ -22,8 +23,13 @@ export function AddMemberDialog({
   conversationId,
   existingParticipantIds,
 }: AddMemberDialogProps) {
+  const [mounted, setMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUsers, setSelectedUsers] = useState<SearchUser[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { data: searchResults, isLoading } = useUserSearch(searchQuery);
 
@@ -61,13 +67,13 @@ export function AddMemberDialog({
     });
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const filtered = (searchResults || []).filter(
     (u) => !existingParticipantIds.includes(u._id)
   );
 
-  return (
+  return createPortal(
     <div
       onClick={handleClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
@@ -167,6 +173,7 @@ export function AddMemberDialog({
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

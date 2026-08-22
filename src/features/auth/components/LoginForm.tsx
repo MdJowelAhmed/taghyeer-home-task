@@ -101,11 +101,16 @@ export function LoginForm() {
               <Input
                 id="phone"
                 type="tel"
+                inputMode="tel"
                 placeholder="e.g. 01478523698"
-                className="pl-10"
+                className="pl-10 font-mono"
                 error={!!errors.phone}
                 autoComplete="tel"
-                {...register("phone")}
+                {...register("phone", {
+                  onChange: (e) => {
+                    e.target.value = e.target.value.replace(/[^0-9+\s-]/g, "");
+                  },
+                })}
               />
             </div>
             {errors.phone && (

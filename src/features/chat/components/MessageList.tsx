@@ -12,12 +12,11 @@ interface MessageListProps {
 }
 
 /**
- * MessageList Component with Smart Auto Scroll.
- * Logic:
- * - Initial load / conversation change: auto scroll to bottom.
- * - New message when near bottom or self: auto scroll to bottom.
- * - New message when scrolled up: keep scroll position and show floating "New messages" indicator.
- * - Clicking indicator: smooth scroll to bottom.
+ * MessageList Component with Smart Auto Scroll & Dynamic Unread Counter.
+ * Features:
+ * - Automatic scroll on initial load & self messages.
+ * - Dynamic unread count badge ("3 new messages ↓") when scrolled up.
+ * - Smooth scroll & badge reset on click or scroll-to-bottom.
  */
 export function MessageList({
   messages,
@@ -30,14 +29,14 @@ export function MessageList({
   const prevMessagesLengthRef = useRef(0);
 
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const [hasNewUnread, setHasNewUnread] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const scrollToBottom = useCallback((smooth = true) => {
     bottomRef.current?.scrollIntoView({
       behavior: smooth ? "smooth" : "auto",
     });
     setShowScrollButton(false);
-    setHasNewUnread(false);
+    setUnreadCount(0);
   }, []);
 
   const handleScroll = () => {
@@ -51,7 +50,7 @@ export function MessageList({
 
     if (isBottom) {
       setShowScrollButton(false);
-      setHasNewUnread(false);
+      setUnreadCount(0);
     } else if (distanceFromBottom > 200) {
       setShowScrollButton(true);
     }
@@ -59,18 +58,18 @@ export function MessageList({
 
   useEffect(() => {
     const isInitialLoad = prevMessagesLengthRef.current === 0;
-    const isNewMessage = messages.length > prevMessagesLengthRef.current;
+    const addedCount = messages.length - prevMessagesLengthRef.current;
     const lastMsg = messages[messages.length - 1];
     const isSelfMsg = Boolean(lastMsg && currentUserId && lastMsg.sender === currentUserId);
 
     if (isInitialLoad) {
       scrollToBottom(false);
-    } else if (isNewMessage) {
+    } else if (addedCount > 0) {
       if (isNearBottomRef.current || isSelfMsg) {
         scrollToBottom(true);
       } else {
         setShowScrollButton(true);
-        setHasNewUnread(true);
+        setUnreadCount((prev) => prev + addedCount);
       }
     }
 
@@ -119,16 +118,22 @@ export function MessageList({
         <div ref={bottomRef} />
       </div>
 
-      {/* Floating Smart Scroll Indicator */}
+      {/* Bonus Smart Floating Unread Message Badge */}
       {showScrollButton && (
         <button
           onClick={() => scrollToBottom(true)}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-xl shadow-purple-950/60 border border-purple-400/30 transition-all transform hover:scale-105 active:scale-95"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gradient hover:brightness-110 text-white text-xs font-semibold shadow-xl shadow-purple-950/70 border border-purple-400/30 transition-all transform hover:scale-105 active:scale-95 animate-in fade-in slide-in-from-bottom-2 duration-200"
         >
-          {hasNewUnread && (
-            <span className="h-2 w-2 rounded-full bg-pink-400 animate-ping" />
+          {unreadCount > 0 && (
+            <span className="flex items-center justify-center h-5 min-w-5 px-1.5 rounded-full bg-white text-purple-700 font-extrabold text-[11px] shadow-sm">
+              {unreadCount}
+            </span>
           )}
-          <span>{hasNewUnread ? "New messages" : "Scroll to bottom"}</span>
+          <span>
+            {unreadCount > 0
+              ? `${unreadCount === 1 ? "new message" : "new messages"}`
+              : "Scroll to bottom"}
+          </span>
           <ArrowDown className="h-3.5 w-3.5" />
         </button>
       )}

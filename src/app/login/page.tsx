@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { LoginForm } from "@/features/auth/components/LoginForm";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Metadata } from "next";
 import loginImg from "@/assets/login.jpg";
 
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Login Page with Taghyeer dark/light theme, cyber mesh lighting, and login.jpg background image.
+ * Login Page with Taghyeer dark cyber mesh lighting and login.jpg background image.
  */
 export default function LoginPage() {
   return (
@@ -25,10 +24,6 @@ export default function LoginPage() {
           className="object-cover object-center opacity-40 mix-blend-screen scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#020618]/70 via-[#020618]/40 to-[#020618]" />
-      </div>
-      {/* Top Bar with Theme Toggle */}
-      <div className="absolute top-4 right-4 z-20">
-        <ThemeToggle />
       </div>
 
       {/* Taghyeer Hero Cyber Lighting Orbs */}

@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter, IBM_Plex_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -23,10 +22,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8fafc" },
-    { media: "(prefers-color-scheme: dark)", color: "#020618" },
-  ],
+  themeColor: "#020618",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -54,8 +50,8 @@ export const metadata: Metadata = {
 
 /**
  * Root Layout wrapping the entire application with providers:
- * 1. ThemeProvider: Manages light/dark theme switching and persistence
- * 2. QueryProvider: Manages TanStack Query client caching and query synchronization
+ * 1. QueryProvider: Manages TanStack Query client caching and query synchronization
+ * 2. Toaster: Global toast notification manager
  */
 export default function RootLayout({
   children,
@@ -65,10 +61,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("h-full", "antialiased", "dark", inter.variable, ibmPlexMono.variable, "font-sans", geist.variable)} suppressHydrationWarning>
       <body className={`${inter.className} h-full min-h-screen flex flex-col bg-brand-bg text-brand-text font-sans`}>
-        <ThemeProvider>
-          <QueryProvider>{children}</QueryProvider>
-          <Toaster position="bottom-right" richColors closeButton />
-        </ThemeProvider>
+        <QueryProvider>{children}</QueryProvider>
+        <Toaster position="bottom-right" richColors closeButton />
       </body>
     </html>
   );

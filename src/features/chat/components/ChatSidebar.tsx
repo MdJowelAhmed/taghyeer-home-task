@@ -24,9 +24,9 @@ export function ChatSidebar({
   const [isGroupOpen, setIsGroupOpen] = useState(false);
 
   return (
-    <aside className="w-full md:w-80 lg:w-96 flex flex-col border-r border-purple-500/15 bg-brand-sidebar/80 backdrop-blur-xl shrink-0 h-full">
+    <aside className="w-full md:w-80 lg:w-96 flex flex-col border-r border-purple-500/15 bg-brand-sidebar shrink-0 h-full min-h-0">
       {/* Top Search bar & New Group Action */}
-      <div className="p-4 border-b border-purple-500/15 flex items-center gap-2">
+      <div className="p-4 border-b border-purple-500/15 flex items-center gap-2 shrink-0">
         <div className="flex-1">
           <UserSearch onSelectConversation={onSelectConversation} />
         </div>
@@ -42,7 +42,7 @@ export function ChatSidebar({
       </div>
 
       {/* Header with Counter */}
-      <div className="px-4 py-3 flex items-center justify-between border-b border-purple-500/10">
+      <div className="px-4 py-3 flex items-center justify-between border-b border-purple-500/10 shrink-0">
         <div className="flex items-center gap-2">
           <MessageSquare className="h-4 w-4 text-brand-gradient-to" />
           <h3 className="text-xs font-bold uppercase tracking-wider text-brand-muted">
@@ -55,7 +55,7 @@ export function ChatSidebar({
       </div>
 
       {/* Scrollable Conversation List */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto">
         <ConversationList
           conversations={conversations}
           isLoading={isLoading}

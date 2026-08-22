@@ -68,11 +68,11 @@ body {
 
 /* Centralized Gradient Utilities */
 .bg-brand-gradient {
-  background: linear-gradient(270deg, #8926fe 0%, #d72dfc 100%);
+  background: linear-gradient(90deg, #8926fe 0%, #d72dfc 100%);
 }
 
 .text-brand-gradient {
-  background: linear-gradient(270deg, #8926fe 0%, #d72dfc 100%);
+  background: linear-gradient(90deg, #8926fe 0%, #d72dfc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

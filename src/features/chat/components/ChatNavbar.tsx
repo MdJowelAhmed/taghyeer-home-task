@@ -11,7 +11,7 @@ interface ChatNavbarProps {
 
 export function ChatNavbar({ user, onLogout }: ChatNavbarProps) {
   return (
-    <header className="h-16 px-4 md:px-6 border-b border-purple-500/15 bg-brand-bg/90 backdrop-blur-md flex items-center justify-between shrink-0 z-20 shadow-lg shadow-purple-950/20">
+    <header className="h-16 px-4 md:px-6 border-b border-purple-500/15 bg-brand-sidebar flex items-center justify-between shrink-0 z-20 shadow-lg shadow-purple-950/20">
       <div className="flex items-center gap-3">
         {/* Taghyeer Logo */}
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-gradient text-white shadow-lg shadow-purple-600/30">

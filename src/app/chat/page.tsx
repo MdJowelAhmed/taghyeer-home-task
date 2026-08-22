@@ -38,7 +38,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-brand-bg overflow-hidden select-none">
+    <div className="h-screen h-[100dvh] flex flex-col bg-brand-bg overflow-hidden select-none">
       {/* Top Navbar */}
       <ChatNavbar user={user} onLogout={logout} />
 

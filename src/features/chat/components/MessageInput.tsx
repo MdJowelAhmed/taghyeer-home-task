@@ -29,7 +29,7 @@ export function MessageInput({ onSendMessage, isLoading }: MessageInputProps) {
   };
 
   return (
-    <div className="p-3 md:p-4 border-t border-purple-500/15 bg-brand-sidebar/80 backdrop-blur-xl shrink-0 z-10">
+    <div className="p-3 md:p-4 border-t border-purple-500/15 bg-brand-sidebar shrink-0 z-10">
       <form onSubmit={handleSubmit} className="flex items-center gap-2">
         <input
           type="text"

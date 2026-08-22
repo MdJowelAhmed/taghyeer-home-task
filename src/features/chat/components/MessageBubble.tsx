@@ -5,8 +5,10 @@ import { cn } from "@/lib/utils";
 interface MessageBubbleProps {
   message: Message;
   isSelf: boolean;
+  senderId?: string;
   senderName?: string;
   senderPhone?: string;
+  onSelectUser?: (user: { _id: string; name: string; phone?: string }) => void;
 }
 
 /**
@@ -16,8 +18,10 @@ interface MessageBubbleProps {
 export function MessageBubble({
   message,
   isSelf,
+  senderId,
   senderName = "User",
   senderPhone,
+  onSelectUser,
 }: MessageBubbleProps) {
   const formattedTime = message.createdAt
     ? new Date(message.createdAt).toLocaleTimeString([], {
@@ -25,6 +29,12 @@ export function MessageBubble({
         minute: "2-digit",
       })
     : "";
+
+  const handleAvatarClick = () => {
+    if (!isSelf && onSelectUser && senderId) {
+      onSelectUser({ _id: senderId, name: senderName, phone: senderPhone });
+    }
+  };
 
   return (
     <div
@@ -40,6 +50,7 @@ export function MessageBubble({
           size="sm"
           showTooltip={true}
           alignTooltip="left"
+          onClick={handleAvatarClick}
           className="mb-0.5"
         />
       )}

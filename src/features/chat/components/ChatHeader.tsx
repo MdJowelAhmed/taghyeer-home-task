@@ -13,12 +13,14 @@ interface ChatHeaderProps {
   conversation: Conversation;
   currentUserId?: string;
   onBack: () => void;
+  onSelectUser?: (user: { _id: string; name: string; phone?: string }) => void;
 }
 
 export function ChatHeader({
   conversation,
   currentUserId,
   onBack,
+  onSelectUser,
 }: ChatHeaderProps) {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [isMembersOpen, setIsMembersOpen] = useState(false);
@@ -132,6 +134,7 @@ export function ChatHeader({
             conversation={conversation}
             currentUserId={currentUserId}
             onLeaveGroupSuccess={onBack}
+            onSelectUser={onSelectUser}
           />
           <RenameGroupDialog
             isOpen={isRenameOpen}

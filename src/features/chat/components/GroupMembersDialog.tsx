@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { Users, X, UserMinus, ShieldCheck, LogOut, Loader2, ShieldPlus } from "lucide-react";
+import { Users, X, UserMinus, ShieldCheck, LogOut, Loader2, ShieldPlus, MessageSquare } from "lucide-react";
 import { Conversation, Participant } from "../types/chat.types";
 import { useRemoveParticipant, usePromoteAdmin } from "../hooks/useConversations";
 import { UserAvatar } from "./UserAvatar";
@@ -13,6 +13,7 @@ interface GroupMembersDialogProps {
   conversation: Conversation;
   currentUserId?: string;
   onLeaveGroupSuccess?: () => void;
+  onSelectUser?: (user: { _id: string; name: string; phone?: string }) => void;
 }
 
 export function GroupMembersDialog({
@@ -21,6 +22,7 @@ export function GroupMembersDialog({
   conversation,
   currentUserId,
   onLeaveGroupSuccess,
+  onSelectUser,
 }: GroupMembersDialogProps) {
   const { mutate: removeMember, isPending: isRemoving } = useRemoveParticipant();
   const { mutate: promoteAdmin, isPending: isPromoting } = usePromoteAdmin();
@@ -59,6 +61,13 @@ export function GroupMembersDialog({
     );
   };
 
+  const handleMemberClick = (member: Participant) => {
+    if (member._id !== currentUserId && onSelectUser) {
+      onSelectUser({ _id: member._id, name: member.name, phone: member.phone });
+      onClose();
+    }
+  };
+
   return (
     <div
       onClick={onClose}
@@ -91,10 +100,15 @@ export function GroupMembersDialog({
             return (
               <div key={member._id} className="flex items-center justify-between py-2 first:pt-0 last:pb-0">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <UserAvatar name={member.name} size="sm" />
-                  <div className="truncate">
+                  <UserAvatar
+                    name={member.name}
+                    phone={member.phone}
+                    size="sm"
+                    onClick={() => handleMemberClick(member)}
+                  />
+                  <div className="truncate cursor-pointer" onClick={() => handleMemberClick(member)}>
                     <div className="flex items-center gap-1.5">
-                      <p className="text-xs font-semibold text-brand-text truncate">
+                      <p className="text-xs font-semibold text-brand-text hover:text-fuchsia-400 transition-colors truncate">
                         {member.name} {isSelf && "(You)"}
                       </p>
                       {memberIsAdmin && (
@@ -108,6 +122,17 @@ export function GroupMembersDialog({
                 </div>
 
                 <div className="flex items-center gap-1 shrink-0">
+                  {!isSelf && onSelectUser && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleMemberClick(member)}
+                      title="Send Private Message"
+                      className="h-7 px-2 text-xs text-fuchsia-400 hover:bg-purple-500/10"
+                    >
+                      <MessageSquare className="h-3.5 w-3.5 mr-1" /> Message
+                    </Button>
+                  )}
                   {isAdmin && !memberIsAdmin && !isSelf && (
                     <Button
                       variant="ghost"

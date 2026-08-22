@@ -12,6 +12,7 @@ interface UserAvatarProps {
   isOnline?: boolean;
   showTooltip?: boolean;
   alignTooltip?: "left" | "right" | "center";
+  onClick?: () => void;
 }
 
 /**
@@ -26,6 +27,7 @@ export function UserAvatar({
   isOnline,
   showTooltip = true,
   alignTooltip = "left",
+  onClick,
 }: UserAvatarProps) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -70,6 +72,7 @@ export function UserAvatar({
 
   return (
     <div
+      onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="relative shrink-0 group cursor-pointer"

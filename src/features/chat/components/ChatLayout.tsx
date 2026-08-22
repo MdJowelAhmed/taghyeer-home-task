@@ -8,6 +8,8 @@ import { ChatWindow } from "./ChatWindow";
 import { EmptyChat } from "./EmptyChat";
 import { cn } from "@/lib/utils";
 
+import { DirectMessageModal, TargetUser } from "./DirectMessageModal";
+
 interface ChatLayoutProps {
   currentUserId?: string;
 }
@@ -17,6 +19,7 @@ export function ChatLayout({ currentUserId }: ChatLayoutProps) {
     string | null
   >(null);
   const [unreadMap, setUnreadMap] = useState<Record<string, number>>({});
+  const [directMessageUser, setDirectMessageUser] = useState<TargetUser | null>(null);
 
   const getConvId = (msg: any) => {
     if (!msg) return null;
@@ -46,6 +49,11 @@ export function ChatLayout({ currentUserId }: ChatLayoutProps) {
       delete next[id];
       return next;
     });
+  };
+
+  const handlePromptDirectMessage = (user: TargetUser) => {
+    if (user._id === currentUserId) return;
+    setDirectMessageUser(user);
   };
 
   const selectedConversation = useMemo(() => {
@@ -89,11 +97,20 @@ export function ChatLayout({ currentUserId }: ChatLayoutProps) {
             conversation={selectedConversation}
             currentUserId={currentUserId}
             onBack={() => setSelectedConversationId(null)}
+            onSelectUser={handlePromptDirectMessage}
           />
         ) : (
           <EmptyChat />
         )}
       </div>
+
+      {/* Direct Message Confirmation Modal */}
+      <DirectMessageModal
+        isOpen={Boolean(directMessageUser)}
+        onClose={() => setDirectMessageUser(null)}
+        targetUser={directMessageUser}
+        onSelectConversation={handleSelectConversation}
+      />
     </div>
   );
 }

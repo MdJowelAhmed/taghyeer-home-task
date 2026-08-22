@@ -11,6 +11,7 @@ interface ChatWindowProps {
   conversation: Conversation;
   currentUserId?: string;
   onBack: () => void;
+  onSelectUser?: (user: { _id: string; name: string; phone?: string }) => void;
 }
 
 /**
@@ -23,6 +24,7 @@ export function ChatWindow({
   conversation,
   currentUserId,
   onBack,
+  onSelectUser,
 }: ChatWindowProps) {
   // Real-time messages stream with historical persistence across page reloads
   const { messages, isLoading: isMessagesLoading, addMessage } =
@@ -49,12 +51,14 @@ export function ChatWindow({
         conversation={conversation}
         currentUserId={currentUserId}
         onBack={onBack}
+        onSelectUser={onSelectUser}
       />
       <MessageList
         messages={messages}
         currentUserId={currentUserId}
         isLoading={isMessagesLoading}
         conversation={conversation}
+        onSelectUser={onSelectUser}
       />
       <MessageInput onSendMessage={handleSend} isLoading={isSending} />
     </div>

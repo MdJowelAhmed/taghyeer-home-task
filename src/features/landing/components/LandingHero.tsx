@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, MessageSquare, ArrowDown, ShieldCheck, Zap } from "lucide-react";
@@ -8,13 +9,26 @@ import { HeroChatPreview } from "./HeroChatPreview";
 
 import { AnimatedBackgroundNodes } from "./AnimatedBackgroundNodes";
 import { StaggeredTitle } from "./StaggeredTitle";
+import heroImg from "@/assets/hero.jpg";
 
 /**
- * LandingHero Component with framer-motion entrance and ultra-modern glowing mesh gradients.
+ * LandingHero Component with framer-motion entrance and hero.jpg background image overlay.
  */
 export function LandingHero() {
   return (
     <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden bg-[#030712]">
+      {/* Background Image with Mesh Gradient Overlay */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <Image
+          src={heroImg}
+          alt="Hero Network Background"
+          fill
+          priority
+          className="object-cover object-center opacity-35 mix-blend-screen scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/60 via-[#030712]/30 to-[#030712]" />
+      </div>
+
       <AnimatedBackgroundNodes />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">

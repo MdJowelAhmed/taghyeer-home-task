@@ -58,7 +58,7 @@ export function ConversationItem({
               className={cn(
                 "text-sm truncate",
                 isSelected
-                  ? "font-bold text-purple-600 dark:text-white"
+                  ? "font-bold text-white"
                   : hasUnread
                   ? "font-extrabold text-purple-500 dark:text-purple-200"
                   : "font-semibold text-brand-text"
@@ -76,7 +76,9 @@ export function ConversationItem({
             <span
               className={cn(
                 "text-[11px] shrink-0",
-                isSelected || hasUnread
+                isSelected
+                  ? "text-white/80 font-bold"
+                  : hasUnread
                   ? "text-purple-600 dark:text-purple-300 font-bold"
                   : "text-brand-muted"
               )}
@@ -91,7 +93,7 @@ export function ConversationItem({
             className={cn(
               "truncate max-w-[170px]",
               isSelected
-                ? "text-purple-700 dark:text-purple-200/90 font-medium"
+                ? "text-white/80 font-medium"
                 : hasUnread
                 ? "text-brand-text font-bold"
                 : "text-brand-muted"

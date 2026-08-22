@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { messageService } from "../services/message.service";
 import { SendMessagePayload, Message } from "../types/chat.types";
 import { CONVERSATIONS_QUERY_KEY } from "./useConversations";
+import { toast } from "sonner";
 
 /**
  * Custom mutation hook for sending messages in a conversation.
@@ -42,8 +43,8 @@ export function useSendMessage(onSuccessCallback?: (msg: Message) => void) {
         onSuccessCallback(newMessage);
       }
     },
-    onError: (error) => {
-      console.error("Failed to send message:", error);
+    onError: () => {
+      toast.error("Failed to send message. Please try again.");
     },
   });
 }

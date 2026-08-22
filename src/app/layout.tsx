@@ -1,8 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, IBM_Plex_Mono } from "next/font/google";
+import { Inter, IBM_Plex_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -59,10 +63,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`h-full antialiased dark ${inter.variable} ${ibmPlexMono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={cn("h-full", "antialiased", "dark", inter.variable, ibmPlexMono.variable, "font-sans", geist.variable)} suppressHydrationWarning>
       <body className={`${inter.className} h-full min-h-screen flex flex-col bg-brand-bg text-brand-text font-sans`}>
         <ThemeProvider>
           <QueryProvider>{children}</QueryProvider>
+          <Toaster position="bottom-right" richColors closeButton />
         </ThemeProvider>
       </body>
     </html>

@@ -31,7 +31,7 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-[#030712] relative overflow-hidden">
+    <section id="how-it-works" className="py-24 bg-brand-bg relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -43,7 +43,7 @@ export function HowItWorksSection() {
           <SectionTitle align="center" className="text-3xl md:text-4xl font-mono italic">
             How Taghyeer Works
           </SectionTitle>
-          <p className="text-xs md:text-sm text-slate-300">
+          <p className="text-xs md:text-sm text-brand-muted">
             Three simple steps to start streaming real-time conversations.
           </p>
         </motion.div>
@@ -59,16 +59,16 @@ export function HowItWorksSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
                 whileHover={{ y: -6, scale: 1.02 }}
-                className="p-7 rounded-2xl bg-[#0b102b] border border-purple-500/30 shadow-xl shadow-purple-950/60 relative overflow-hidden group hover:border-purple-400/60 transition-all"
+                className="p-7 rounded-2xl bg-brand-card border border-brand-border shadow-xl shadow-purple-950/60 relative overflow-hidden group hover:border-purple-400/60 transition-all"
               >
-                <div className="text-5xl font-extrabold text-purple-500/20 group-hover:text-purple-500/40 transition-colors mb-4 font-mono">
+                <div className="text-5xl font-extrabold text-brand-text transition-colors mb-4 font-mono">
                   {step.number}
                 </div>
                 <div className="h-11 w-11 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 flex items-center justify-center text-white mb-4 shadow-lg shadow-purple-950/50">
                   <Icon className="h-5 w-5" />
                 </div>
-                <h3 className="text-base font-bold text-white mb-2">{step.title}</h3>
-                <p className="text-xs text-slate-300 leading-relaxed">{step.description}</p>
+                <h3 className="text-base font-bold text-brand-text mb-2">{step.title}</h3>
+                <p className="text-xs text-brand-muted leading-relaxed">{step.description}</p>
               </motion.div>
             );
           })}

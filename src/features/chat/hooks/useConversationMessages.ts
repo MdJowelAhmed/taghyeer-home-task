@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Message } from "../types/chat.types";
 import { messageService } from "../services/message.service";
 import { chatSocketService } from "../services/chat-socket.service";
+
+const PAGE_LIMIT = 20;
 
 export const getMessagesQueryKey = (conversationId: string) => [
   "chat",
@@ -13,58 +15,88 @@ export const getMessagesQueryKey = (conversationId: string) => [
 ];
 
 /**
- * Custom hook to load full conversation message history and subscribe
- * to incoming real-time Socket.io message events.
- *
- * Ensures messages persist on page reload and update in real-time.
+ * Custom hook for cursor-based paginated message history + real-time socket sync.
+ * Initial load fetches latest PAGE_LIMIT messages (newest first → reversed).
+ * loadOlderMessages() fetches older messages using `before` cursor param.
  */
 export function useConversationMessages(conversationId: string) {
   const queryClient = useQueryClient();
-  const queryKey = getMessagesQueryKey(conversationId);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingOlder, setIsLoadingOlder] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const initializedFor = useRef<string | null>(null);
 
-  const { data: messages = [], isLoading } = useQuery({
-    queryKey,
-    queryFn: async () => {
-      const response = await messageService.getConversationMessages(conversationId);
-      const rawMessages = response.messages || [];
-      // Backend returns newest first; reverse for standard top-to-bottom chat flow
-      return [...rawMessages].reverse();
-    },
-    enabled: Boolean(conversationId),
-    staleTime: 1000 * 60 * 5, // 5 minutes cache
-  });
+  // Initial load whenever conversation changes
+  useEffect(() => {
+    if (!conversationId || initializedFor.current === conversationId) return;
+    initializedFor.current = conversationId;
 
-  const addMessage = useCallback(
-    (newMsg: Message) => {
-      queryClient.setQueryData<Message[]>(queryKey, (prev = []) => {
-        // Prevent duplicate messages
-        if (prev.some((m) => m._id === newMsg._id)) {
-          return prev;
-        }
+    setIsLoading(true);
+    setMessages([]);
+    setHasMore(false);
+
+    messageService
+      .getConversationMessages(conversationId, PAGE_LIMIT)
+      .then((res) => {
+        setMessages([...( res.messages || [])].reverse());
+        setHasMore(res.hasMore ?? false);
+      })
+      .finally(() => setIsLoading(false));
+  }, [conversationId]);
+
+  // Reset when conversation changes (next render picks it up via ref)
+  useEffect(() => {
+    initializedFor.current = null;
+  }, [conversationId]);
+
+  /** Prepend older messages (scroll-up pagination) */
+  const loadOlderMessages = useCallback(async () => {
+    if (!hasMore || isLoadingOlder || !messages.length) return;
+
+    const oldestId = messages[0]._id;
+    setIsLoadingOlder(true);
+
+    try {
+      const res = await messageService.getConversationMessages(
+        conversationId,
+        PAGE_LIMIT,
+        oldestId
+      );
+      const older = [...(res.messages || [])].reverse();
+      setMessages((prev) => [...older, ...prev]);
+      setHasMore(res.hasMore ?? false);
+    } finally {
+      setIsLoadingOlder(false);
+    }
+  }, [conversationId, hasMore, isLoadingOlder, messages]);
+
+  /** Append a new real-time message (no duplicates) */
+  const addMessage = useCallback((newMsg: Message) => {
+    setMessages((prev) => {
+      if (prev.some((m) => m._id === newMsg._id)) return prev;
+      return [...prev, newMsg];
+    });
+    // Keep query cache in sync for other hooks that may observe it
+    queryClient.setQueryData<Message[]>(
+      getMessagesQueryKey(conversationId),
+      (prev = []) => {
+        if (prev.some((m) => m._id === newMsg._id)) return prev;
         return [...prev, newMsg];
-      });
-    },
-    [queryClient, queryKey]
-  );
+      }
+    );
+  }, [conversationId, queryClient]);
 
+  // Subscribe to real-time socket events
   useEffect(() => {
     if (!conversationId) return;
-
-    // Listen for incoming real-time messages for this conversation
-    const unsubscribe = chatSocketService.subscribeToNewMessage((incomingMsg) => {
+    const unsub = chatSocketService.subscribeToNewMessage((incomingMsg) => {
       if (incomingMsg.conversation === conversationId) {
-        addMessage(incomingMsg);
+        addMessage(incomingMsg as unknown as Message);
       }
     });
-
-    return () => {
-      unsubscribe();
-    };
+    return () => unsub();
   }, [conversationId, addMessage]);
 
-  return {
-    messages,
-    isLoading,
-    addMessage,
-  };
+  return { messages, isLoading, isLoadingOlder, hasMore, addMessage, loadOlderMessages };
 }

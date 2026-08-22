@@ -26,23 +26,22 @@ export function ChatWindow({
   onBack,
   onSelectUser,
 }: ChatWindowProps) {
-  // Real-time messages stream with historical persistence across page reloads
-  const { messages, isLoading: isMessagesLoading, addMessage } =
-    useConversationMessages(conversation._id);
+  const {
+    messages,
+    isLoading,
+    isLoadingOlder,
+    hasMore,
+    addMessage,
+    loadOlderMessages,
+  } = useConversationMessages(conversation._id);
 
-  // Send message mutation handler
   const { mutate: sendMessage, isPending: isSending } = useSendMessage(
-    (sentMsg) => {
-      addMessage(sentMsg);
-    }
+    (sentMsg) => addMessage(sentMsg)
   );
 
   const handleSend = (text: string) => {
     if (!text.trim()) return;
-    sendMessage({
-      conversationId: conversation._id,
-      text: text.trim(),
-    });
+    sendMessage({ conversationId: conversation._id, text: text.trim() });
   };
 
   return (
@@ -56,7 +55,10 @@ export function ChatWindow({
       <MessageList
         messages={messages}
         currentUserId={currentUserId}
-        isLoading={isMessagesLoading}
+        isLoading={isLoading}
+        isLoadingOlder={isLoadingOlder}
+        hasMore={hasMore}
+        onLoadOlder={loadOlderMessages}
         conversation={conversation}
         onSelectUser={onSelectUser}
       />

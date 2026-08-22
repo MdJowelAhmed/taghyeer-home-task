@@ -28,7 +28,7 @@ export function LandingNavbar() {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-[#030712]/90 backdrop-blur-2xl py-3 shadow-2xl shadow-purple-950/40"
+          ? "bg-brand-bg/90 backdrop-blur-2xl py-3 shadow-2xl shadow-purple-950/40"
           : "bg-transparent py-5"
       }`}
     >
@@ -40,19 +40,19 @@ export function LandingNavbar() {
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-base font-extrabold text-white tracking-wide group-hover:text-purple-400 transition-colors">
+              <span className="text-base font-extrabold text-brand-text tracking-wide group-hover:text-purple-400 transition-colors">
                 TAGHYEER
               </span>
               <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/30">
                 <Sparkles className="h-2.5 w-2.5 text-fuchsia-400" /> Relay
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 font-mono">Real-time Messaging</p>
+            <p className="text-[10px] text-brand-muted font-mono">Real-time Messaging</p>
           </div>
         </Link>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 text-xs font-semibold text-slate-300">
+        <nav className="hidden md:flex items-center gap-8 text-xs font-semibold text-brand-muted">
           <a href="#features" className="hover:text-purple-400 transition-colors">
             Features
           </a>

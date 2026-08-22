@@ -16,7 +16,7 @@ import heroImg from "@/assets/hero2.webp";
  */
 export function LandingHero() {
   return (
-    <section className="relative min-h-screen flex items-center pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden bg-[#030712]">
+    <section className="relative min-h-screen flex items-center pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden bg-brand-bg">
       {/* Background Image with Smooth Ambient Breathing Animation */}
       <motion.div
         animate={{
@@ -33,7 +33,7 @@ export function LandingHero() {
           priority
           className="object-cover object-center mix-blend-screen"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/50 via-[#030712]/20 to-[#030712]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-bg/50 via-brand-bg/20 to-brand-bg" />
       </motion.div>
 
       <AnimatedBackgroundNodes />
@@ -58,7 +58,7 @@ export function LandingHero() {
               className="text-4xl md:text-5xl lg:text-6xl text-white"
             />
 
-            <p className="text-sm md:text-base text-slate-300 leading-relaxed max-w-xl mx-auto lg:mx-0">
+            <p className="text-sm md:text-base text-brand-muted leading-relaxed max-w-xl mx-auto lg:mx-0">
               Connect with people instantly, start private 1-to-1 chats, and bring your groups together in one sleek, real-time messaging space.
             </p>
 

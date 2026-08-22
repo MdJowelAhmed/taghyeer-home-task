@@ -56,7 +56,7 @@ export function InteractiveDemoSection() {
   };
 
   return (
-    <section id="demo" className="py-24 bg-[#070c22]/80 border-y border-purple-500/20 relative overflow-hidden">
+    <section id="demo" className="py-24 bg-brand-sidebar/80 border-y border-brand-border relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 md:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -65,14 +65,14 @@ export function InteractiveDemoSection() {
           transition={{ duration: 0.5 }}
           className="text-center space-y-3 mb-12"
         >
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-mono italic">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-300 border border-purple-500/30 text-xs font-mono italic">
             <Sparkles className="h-3.5 w-3.5 text-fuchsia-400" />
             <span className="font-mono italic">INTERACTIVE DEMO</span>
           </div>
           <SectionTitle align="center" className="text-3xl md:text-4xl font-mono italic">
             See it happen.
           </SectionTitle>
-          <p className="text-xs md:text-sm text-slate-300">
+          <p className="text-xs md:text-sm text-brand-muted">
             Try typing a message in the live widget below to test instant message delivery.
           </p>
         </motion.div>
@@ -83,13 +83,13 @@ export function InteractiveDemoSection() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-xl mx-auto rounded-2xl border border-purple-500/30 bg-[#0b102b] shadow-2xl shadow-purple-950/90 overflow-hidden"
+          className="w-full max-w-xl mx-auto rounded-2xl border border-brand-border bg-brand-card shadow-2xl shadow-purple-950/90 overflow-hidden"
         >
-          <div className="p-3.5 border-b border-purple-500/20 bg-[#070c22] flex items-center justify-between">
+          <div className="p-3.5 border-b border-brand-border bg-brand-sidebar flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <UserAvatar name="Taghyeer Bot" size="sm" isOnline={true} />
               <div>
-                <h4 className="text-xs font-bold text-white">Taghyeer Demo Bot</h4>
+                <h4 className="text-xs font-bold text-brand-text">Taghyeer Demo Bot</h4>
                 <p className="text-[10px] text-emerald-400 font-mono">Connected • Real-time</p>
               </div>
             </div>
@@ -98,7 +98,7 @@ export function InteractiveDemoSection() {
             </span>
           </div>
 
-          <div className="p-4 space-y-2.5 h-64 overflow-y-auto bg-gradient-to-b from-[#020618]/90 to-[#0b102b]/90">
+          <div className="p-4 space-y-2.5 h-64 overflow-y-auto bg-gradient-to-b from-brand-bg/90 to-brand-card/90">
             <AnimatePresence initial={false}>
               {messages.map((m) => (
                 <motion.div
@@ -113,7 +113,7 @@ export function InteractiveDemoSection() {
                     className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-xs ${
                       m.sender === "user"
                         ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white rounded-br-xs shadow-md shadow-purple-950/50"
-                        : "bg-[#0f172a] border border-purple-500/20 text-slate-100 rounded-bl-xs shadow-sm"
+                        : "bg-brand-surface border border-purple-500/20 text-brand-text rounded-bl-xs shadow-sm"
                     }`}
                   >
                     <p className="leading-relaxed">{m.text}</p>
@@ -131,13 +131,13 @@ export function InteractiveDemoSection() {
             </AnimatePresence>
           </div>
 
-          <form onSubmit={handleSend} className="p-3 border-t border-purple-500/20 bg-[#070c22] flex items-center gap-2">
+          <form onSubmit={handleSend} className="p-3 border-t border-brand-border bg-brand-sidebar flex items-center gap-2">
             <input
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Type something to test live delivery..."
-              className="flex-1 h-10 px-3.5 rounded-xl bg-[#0b102b] border border-purple-500/25 text-xs text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="flex-1 h-10 px-3.5 rounded-xl bg-brand-card border border-brand-border text-xs text-brand-text placeholder:text-brand-muted focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             <Button type="submit" size="sm" disabled={!inputText.trim()} className="h-10 px-4 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold">
               <Send className="h-3.5 w-3.5 mr-1" /> Send

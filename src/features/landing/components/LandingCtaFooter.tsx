@@ -14,19 +14,19 @@ export function LandingCtaFooter() {
   return (
     <>
       {/* Final Call to Action */}
-      <section className="py-24 bg-[#030712] relative overflow-hidden">
+      <section className="py-24 bg-brand-bg relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 md:px-6 relative z-10 text-center space-y-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="p-10 md:p-14 rounded-3xl bg-[#0b102b] border border-purple-500/30 shadow-2xl shadow-purple-950/90 space-y-6 relative overflow-hidden"
+            className="p-10 md:p-14 rounded-3xl bg-brand-card border border-brand-border shadow-2xl shadow-purple-950/90 space-y-6 relative overflow-hidden"
           >
             <div className="absolute -top-24 -left-24 w-56 h-56 bg-purple-600/30 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-24 -right-24 w-56 h-56 bg-fuchsia-600/30 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-mono italic">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-300 border border-purple-500/30 text-xs font-mono italic">
               <Sparkles className="h-3.5 w-3.5 text-fuchsia-400" />
               <span className="font-mono italic">START MESSAGING TODAY</span>
             </div>
@@ -35,7 +35,7 @@ export function LandingCtaFooter() {
               Your next conversation starts here.
             </SectionTitle>
 
-            <p className="text-xs md:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+            <p className="text-xs md:text-sm text-brand-muted max-w-md mx-auto leading-relaxed">
               Simple messaging. Instant real-time connection. Direct 1-to-1 and group chats without the waiting.
             </p>
 
@@ -56,23 +56,23 @@ export function LandingCtaFooter() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-purple-500/20 bg-[#070c22] text-xs text-slate-400">
+      <footer className="py-8 border-t border-brand-border bg-brand-sidebar text-xs text-brand-muted">
         <div className="max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <div className="flex items-center gap-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-tr from-purple-600 to-fuchsia-600 text-white font-extrabold text-xs">
               T
             </div>
-            <span className="font-bold text-white tracking-wide">TAGHYEER CHAT</span>
-            <span className="text-slate-400">• Real conversations. Without the waiting.</span>
+            <span className="font-bold text-brand-text tracking-wide">TAGHYEER CHAT</span>
+            <span className="text-brand-muted">• Real conversations. Without the waiting.</span>
           </div>
 
           <div className="flex items-center gap-6">
-            <a href="#features" className="hover:text-white transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a>
-            <Link href="/chat" className="hover:text-white transition-colors font-bold text-purple-400">Open Chat</Link>
+            <a href="#features" className="hover:text-brand-text transition-colors">Features</a>
+            <a href="#how-it-works" className="hover:text-brand-text transition-colors">How It Works</a>
+            <Link href="/chat" className="hover:text-brand-text transition-colors font-bold text-purple-600 dark:text-purple-400">Open Chat</Link>
           </div>
 
-          <p className="text-[11px] font-mono text-slate-500">
+          <p className="text-[11px] font-mono text-brand-muted">
             &copy; {new Date().getFullYear()} Taghyeer Digital Systems. All rights reserved.
           </p>
         </div>

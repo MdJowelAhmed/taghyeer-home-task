@@ -1,10 +1,41 @@
-import { redirect } from "next/navigation";
+import { Metadata } from "next";
+import { LandingNavbar } from "@/features/landing/components/LandingNavbar";
+import { LandingHero } from "@/features/landing/components/LandingHero";
+import { RealtimeFeatureSection } from "@/features/landing/components/RealtimeFeatureSection";
+import { SearchFeatureSection } from "@/features/landing/components/SearchFeatureSection";
+import { GroupFeatureSection } from "@/features/landing/components/GroupFeatureSection";
+import { HowItWorksSection } from "@/features/landing/components/HowItWorksSection";
+import { InteractiveDemoSection } from "@/features/landing/components/InteractiveDemoSection";
+import { LandingCtaFooter } from "@/features/landing/components/LandingCtaFooter";
+
+export const metadata: Metadata = {
+  title: "Taghyeer Chat — Real conversations. Without the waiting.",
+  description:
+    "Enterprise real-time 1-to-1 and group chat application built with Next.js App Router, Socket.io, and Tailwind CSS.",
+  openGraph: {
+    title: "Taghyeer Chat — Real conversations. Without the waiting.",
+    description:
+      "Enterprise real-time 1-to-1 and group chat application with zero page reloads.",
+  },
+};
 
 /**
- * Root Application Page (Server Component).
- * Automatically handles server-side redirect to /chat.
- * Middleware intercepts unauthorized requests and redirects to /login.
+ * Root Landing Page Component (Server Component).
+ * Showcase experience for Taghyeer Chat product features.
  */
 export default function RootPage() {
-  redirect("/chat");
+  return (
+    <div className="min-h-screen bg-brand-bg text-brand-text selection:bg-purple-500/30">
+      <LandingNavbar />
+      <main>
+        <LandingHero />
+        <RealtimeFeatureSection />
+        <SearchFeatureSection />
+        <GroupFeatureSection />
+        <HowItWorksSection />
+        <InteractiveDemoSection />
+        <LandingCtaFooter />
+      </main>
+    </div>
+  );
 }

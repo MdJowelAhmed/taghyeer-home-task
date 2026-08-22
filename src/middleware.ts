@@ -10,8 +10,7 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/") {
-    const destination = token ? "/chat" : "/login";
-    return NextResponse.redirect(new URL(destination, request.url));
+    return NextResponse.next();
   }
 
   if (pathname.startsWith("/chat") && !token) {

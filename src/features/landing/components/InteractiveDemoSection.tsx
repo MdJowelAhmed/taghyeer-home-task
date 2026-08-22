@@ -56,8 +56,8 @@ export function InteractiveDemoSection() {
   };
 
   return (
-    <section id="demo" className="py-24 bg-brand-sidebar/80 border-y border-brand-border relative overflow-hidden">
-      <div className="max-w-4xl mx-auto px-4 md:px-6 relative z-10">
+    <section id="demo" className="py-32 md:py-40 min-h-[600px] flex items-center bg-brand-sidebar/80 border-y border-brand-border relative overflow-hidden">
+      <div className="max-w-4xl mx-auto px-4 md:px-6 relative z-10 w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

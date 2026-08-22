@@ -31,8 +31,8 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-brand-bg relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
+    <section id="how-it-works" className="py-32 md:py-44 min-h-[640px] flex items-center bg-brand-bg relative overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10 w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

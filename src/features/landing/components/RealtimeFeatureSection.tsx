@@ -12,8 +12,8 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
  */
 export function RealtimeFeatureSection() {
   return (
-    <section id="features" className="py-24 bg-brand-sidebar/80 border-y border-brand-border relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
+    <section id="features" className="py-32 md:py-40 min-h-[580px] flex items-center bg-brand-sidebar/80 border-y border-brand-border relative overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10 w-full">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
           {/* Left Feature Visual */}
           <motion.div

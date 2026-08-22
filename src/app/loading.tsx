@@ -1,9 +1,6 @@
 import { Loader } from "@/components/ui/Loader";
 
-/**
- * Global App Route Loading Component.
- * Displays centered brand loader during page transitions and server rendering.
- */
+
 export default function Loading() {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-brand-bg text-brand-text space-y-4">

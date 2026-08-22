@@ -17,17 +17,24 @@ import heroImg from "@/assets/hero2.webp";
 export function LandingHero() {
   return (
     <section className="relative min-h-screen flex items-center pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden bg-[#030712]">
-      {/* Background Image with Mesh Gradient Overlay */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      {/* Background Image with Smooth Ambient Breathing Animation */}
+      <motion.div
+        animate={{
+          scale: [1, 1.06, 1],
+          opacity: [0.35, 0.5, 0.35],
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-0 z-0 overflow-hidden pointer-events-none"
+      >
         <Image
           src={heroImg}
           alt="Hero Digital Globe Network Background"
           fill
           priority
-          className="object-cover object-center opacity-40 mix-blend-screen scale-110"
+          className="object-cover object-center mix-blend-screen"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/50 via-[#030712]/25 to-[#030712]" />
-      </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/50 via-[#030712]/20 to-[#030712]" />
+      </motion.div>
 
       <AnimatedBackgroundNodes />
 

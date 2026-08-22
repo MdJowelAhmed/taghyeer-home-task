@@ -28,11 +28,20 @@ export function MessageList({
   const bottomRef = useRef<HTMLDivElement>(null);
   const isNearBottomRef = useRef(true);
   const prevMsgLenRef = useRef(0);
+  const prevConversationIdRef = useRef<string | undefined>(conversation?._id);
   const paginationInProgressRef = useRef(false);
   const prevScrollHeightRef = useRef(0);
 
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+
+  // Reset tracking state whenever active conversation switches
+  if (prevConversationIdRef.current !== conversation?._id) {
+    prevConversationIdRef.current = conversation?._id;
+    prevMsgLenRef.current = 0;
+    isNearBottomRef.current = true;
+    paginationInProgressRef.current = false;
+  }
 
   const participantsMap = useMemo(() => {
     const map = new Map<string, Participant>();
@@ -46,15 +55,23 @@ export function MessageList({
   }, [conversation]);
 
   const scrollToBottom = useCallback((smooth = true) => {
+    const container = containerRef.current;
+    if (container) {
+      if (smooth) {
+        container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+      } else {
+        container.scrollTop = container.scrollHeight;
+      }
+    }
     bottomRef.current?.scrollIntoView({ behavior: smooth ? "smooth" : "auto" });
     setShowScrollButton(false);
     setUnreadCount(0);
+    isNearBottomRef.current = true;
   }, []);
 
   /**
    * useLayoutEffect: fires synchronously AFTER DOM update but BEFORE browser paint.
-   * This is the key to zero-flash scroll restoration — the user never sees
-   * the intermediate position where older messages are at the top.
+   * Key to zero-flash pagination scroll restoration + instant initial bottom jump.
    */
   useLayoutEffect(() => {
     const container = containerRef.current;
@@ -73,23 +90,41 @@ export function MessageList({
     prevMsgLenRef.current = messages.length;
 
     if (isInitial && messages.length > 0) {
-      // First render of this conversation — jump to bottom instantly
+      // Test 1: First render of this conversation — jump to bottom instantly
       container.scrollTop = container.scrollHeight;
+      requestAnimationFrame(() => {
+        if (containerRef.current) {
+          containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+      });
       return;
     }
 
     if (addedCount > 0) {
       const lastMsg = messages[messages.length - 1];
-      const isSelf = Boolean(lastMsg && currentUserId && (
-        lastMsg.sender === currentUserId ||
-        (typeof lastMsg.sender === "object" && (lastMsg.sender as any)._id === currentUserId)
-      ));
+      const isSelf = Boolean(
+        lastMsg &&
+          currentUserId &&
+          (lastMsg.sender === currentUserId ||
+            (typeof lastMsg.sender === "object" &&
+              (lastMsg.sender as any)._id === currentUserId))
+      );
+
       if (isNearBottomRef.current || isSelf) {
-        // Smooth scroll for real-time appended messages
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        // Test 2: User at bottom (or self sent message) — smooth auto-scroll to bottom
+        requestAnimationFrame(() => {
+          if (containerRef.current) {
+            containerRef.current.scrollTo({
+              top: containerRef.current.scrollHeight,
+              behavior: "smooth",
+            });
+          }
+          bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        });
         setShowScrollButton(false);
         setUnreadCount(0);
       } else {
+        // Test 3: User scrolled up — don't auto-scroll, show new message indicator
         setShowScrollButton(true);
         setUnreadCount((p) => p + addedCount);
       }
@@ -109,9 +144,18 @@ export function MessageList({
     const c = containerRef.current;
     if (!c) return;
     const dist = c.scrollHeight - c.scrollTop - c.clientHeight;
-    isNearBottomRef.current = dist < 120;
-    if (isNearBottomRef.current) { setShowScrollButton(false); setUnreadCount(0); }
-    else if (dist > 200) setShowScrollButton(true);
+    // Considered near bottom if within viewport screen height threshold (~75% of height or min 350px)
+    const screenThreshold = Math.max(350, c.clientHeight * 0.75);
+    const isNearBottom = dist < screenThreshold;
+    isNearBottomRef.current = isNearBottom;
+
+    if (isNearBottom) {
+      setShowScrollButton(false);
+      setUnreadCount(0);
+    } else {
+      setShowScrollButton(true);
+    }
+
     if (c.scrollTop <= TOP_THRESHOLD) triggerLoadOlder();
   }, [triggerLoadOlder]);
 

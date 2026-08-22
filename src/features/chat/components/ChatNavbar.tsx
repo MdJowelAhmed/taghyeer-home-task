@@ -21,7 +21,7 @@ export function ChatNavbar({ user, onLogout }: ChatNavbarProps) {
       <Link
         href="/"
         className="flex items-center gap-3 group hover:opacity-90 transition-all"
-        title="Go to Home"
+        title="Go to Landing page"
       >
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-gradient text-white shadow-lg shadow-purple-600/30 group-hover:scale-105 transition-transform">
           <span className="font-extrabold text-lg tracking-wider">T</span>

@@ -71,7 +71,7 @@ export function UserProfileModal({
       >
         <div className="flex items-center gap-2.5">
           <Home className="h-4 w-4 text-brand-gradient-to" />
-          <span>Go to Home</span>
+          <span>Go to Landing Page</span>
         </div>
         <span className="text-xs text-brand-muted group-hover:text-brand-text font-bold">→</span>
       </Link>

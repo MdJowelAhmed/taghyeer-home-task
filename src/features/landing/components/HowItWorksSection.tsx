@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Search, MessageSquare, Zap } from "lucide-react";
 
+import { SectionTitle } from "@/components/ui/SectionTitle";
+
 /**
  * HowItWorksSection Component with framer-motion stagger animations.
  */
@@ -38,12 +40,9 @@ export function HowItWorksSection() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-2xl mx-auto space-y-3 mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-            How Taghyeer{" "}
-            <span className="bg-gradient-to-r from-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-              Works
-            </span>
-          </h2>
+          <SectionTitle align="center" className="text-3xl md:text-4xl font-mono italic">
+            How Taghyeer Works
+          </SectionTitle>
           <p className="text-xs md:text-sm text-slate-300">
             Three simple steps to start streaming real-time conversations.
           </p>

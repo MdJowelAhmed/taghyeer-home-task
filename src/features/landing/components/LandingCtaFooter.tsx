@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { MessageSquare, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+import { SectionTitle } from "@/components/ui/SectionTitle";
+
 /**
  * LandingCtaFooter Component with framer-motion glow animations.
  */
@@ -24,17 +26,14 @@ export function LandingCtaFooter() {
             <div className="absolute -top-24 -left-24 w-56 h-56 bg-purple-600/30 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-24 -right-24 w-56 h-56 bg-fuchsia-600/30 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-bold">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-mono italic">
               <Sparkles className="h-3.5 w-3.5 text-fuchsia-400" />
-              <span>START MESSAGING TODAY</span>
+              <span className="font-mono italic">START MESSAGING TODAY</span>
             </div>
 
-            <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight max-w-xl mx-auto leading-tight">
-              Your next conversation{" "}
-              <span className="bg-gradient-to-r from-purple-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
-                starts here.
-              </span>
-            </h2>
+            <SectionTitle align="center" className="text-3xl md:text-5xl font-mono italic">
+              Your next conversation starts here.
+            </SectionTitle>
 
             <p className="text-xs md:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
               Simple messaging. Instant real-time connection. Direct 1-to-1 and group chats without the waiting.

@@ -1,69 +1,41 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { Text3DFlip } from "@/components/ui/Text3DFlip";
+import { cn } from "@/lib/utils";
 
 interface StaggeredTitleProps {
   text: string;
   highlightText?: string;
   className?: string;
+  isMonoItalic?: boolean;
 }
 
 /**
- * StaggeredTitle Component.
- * Word-by-word animated entrance effect for hero titles.
+ * StaggeredTitle Component powered by Text3DFlip 3D character rotation.
+ * Supports font-mono italic styling and gradient text highlights.
  */
 export function StaggeredTitle({
   text,
   highlightText,
   className = "",
+  isMonoItalic = true,
 }: StaggeredTitleProps) {
-  const words = text.split(" ");
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: (i = 1) => ({
-      opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 0.1 * i },
-    }),
-  };
-
-  const wordVariants: Variants = {
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { type: "spring" as const, damping: 12, stiffness: 100 },
-    },
-    hidden: {
-      opacity: 0,
-      y: 25,
-      transition: { type: "spring" as const, damping: 12, stiffness: 100 },
-    },
-  };
-
   return (
-    <motion.h1
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className={`font-extrabold tracking-tight leading-[1.1] ${className}`}
-    >
-      {words.map((word, idx) => (
-        <motion.span
-          key={idx}
-          variants={wordVariants}
-          className="inline-block mr-3"
-        >
-          {word}
-        </motion.span>
-      ))}
+    <div className={cn("tracking-tight leading-[1.1] font-bold text-white", isMonoItalic && "font-mono italic", className)}>
+      <Text3DFlip as="span" rotateDirection="top" staggerDuration={0.03}>
+        {text}
+      </Text3DFlip>
+      {" "}
       {highlightText && (
-        <motion.span
-          variants={wordVariants}
-          className="inline-block bg-gradient-to-r from-purple-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent"
+        <Text3DFlip
+          as="span"
+          rotateDirection="top"
+          staggerDuration={0.03}
+          className="bg-gradient-to-r from-purple-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent"
         >
           {highlightText}
-        </motion.span>
+        </Text3DFlip>
       )}
-    </motion.h1>
+    </div>
   );
 }

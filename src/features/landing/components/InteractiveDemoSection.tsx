@@ -6,6 +6,8 @@ import { UserAvatar } from "@/features/chat/components/UserAvatar";
 import { Send, Sparkles, CheckCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+import { SectionTitle } from "@/components/ui/SectionTitle";
+
 interface SandboxMessage {
   id: string;
   sender: "user" | "bot";
@@ -63,13 +65,13 @@ export function InteractiveDemoSection() {
           transition={{ duration: 0.5 }}
           className="text-center space-y-3 mb-12"
         >
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-bold">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-mono italic">
             <Sparkles className="h-3.5 w-3.5 text-fuchsia-400" />
-            <span>INTERACTIVE DEMO</span>
+            <span className="font-mono italic">INTERACTIVE DEMO</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-            See it <span className="bg-gradient-to-r from-purple-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">happen.</span>
-          </h2>
+          <SectionTitle align="center" className="text-3xl md:text-4xl font-mono italic">
+            See it happen.
+          </SectionTitle>
           <p className="text-xs md:text-sm text-slate-300">
             Try typing a message in the live widget below to test instant message delivery.
           </p>

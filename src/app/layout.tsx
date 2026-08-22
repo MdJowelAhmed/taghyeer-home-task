@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -7,6 +7,14 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-mono",
   display: "swap",
 });
 
@@ -51,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`h-full antialiased dark ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`h-full antialiased dark ${inter.variable} ${ibmPlexMono.variable}`} suppressHydrationWarning>
       <body className={`${inter.className} h-full min-h-screen flex flex-col bg-brand-bg text-brand-text font-sans`}>
         <ThemeProvider>
           <QueryProvider>{children}</QueryProvider>

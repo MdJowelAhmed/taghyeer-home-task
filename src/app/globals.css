@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  --font-mono: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
   --color-brand-bg: var(--brand-bg);
   --color-brand-card: var(--brand-card);
   --color-brand-sidebar: var(--brand-sidebar);

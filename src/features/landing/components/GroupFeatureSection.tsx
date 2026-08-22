@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Users, ShieldCheck } from "lucide-react";
 import { UserAvatar } from "@/features/chat/components/UserAvatar";
 
+import { SectionTitle } from "@/components/ui/SectionTitle";
+
 /**
  * GroupFeatureSection Component.
  * Framer Motion animated group collaboration showcase.
@@ -66,17 +68,14 @@ export function GroupFeatureSection() {
             transition={{ duration: 0.6 }}
             className="md:col-span-6 space-y-4 text-center md:text-left"
           >
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-bold">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-mono italic">
               <Users className="h-3.5 w-3.5 text-fuchsia-400" />
-              <span>GROUP COLLABORATION</span>
+              <span className="font-mono italic">GROUP COLLABORATION</span>
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              One conversation.{" "}
-              <span className="bg-gradient-to-r from-purple-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">
-                Everyone included.
-              </span>
-            </h2>
+            <SectionTitle align="left" className="text-3xl md:text-4xl font-mono italic">
+              One conversation. Everyone included.
+            </SectionTitle>
 
             <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
               Create groups, add members, promote admins, and keep your entire team in sync with unified group message streaming and real-time member updates.

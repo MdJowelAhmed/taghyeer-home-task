@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Search, UserPlus, Phone } from "lucide-react";
 import { UserAvatar } from "@/features/chat/components/UserAvatar";
 
+import { SectionTitle } from "@/components/ui/SectionTitle";
+
 /**
  * SearchFeatureSection Component.
  * Framer Motion animated search discovery showcase.
@@ -21,17 +23,14 @@ export function SearchFeatureSection() {
             transition={{ duration: 0.6 }}
             className="md:col-span-6 space-y-4 text-center md:text-left order-2 md:order-1"
           >
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-bold">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-mono italic">
               <Search className="h-3.5 w-3.5 text-cyan-400" />
-              <span>INSTANT DISCOVERY</span>
+              <span className="font-mono italic">INSTANT DISCOVERY</span>
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              Find someone.{" "}
-              <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-                Start talking.
-              </span>
-            </h2>
+            <SectionTitle align="left" className="text-3xl md:text-4xl font-mono italic">
+              Find someone. Start talking.
+            </SectionTitle>
 
             <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
               Search any user across Taghyeer by name or phone number. One click initializes a direct conversation with full message history and status indicators.

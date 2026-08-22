@@ -47,9 +47,9 @@ export function LandingHero() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-7 space-y-6 text-center lg:text-left"
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/30 text-xs font-bold shadow-xl shadow-purple-950/40">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/30 text-xs font-mono italic shadow-xl shadow-purple-950/40">
               <Zap className="h-3.5 w-3.5 text-fuchsia-400 animate-pulse" />
-              <span className="tracking-wide">REAL-TIME COMMUNICATION ENGINE</span>
+              <span className="tracking-wide font-mono italic">REAL-TIME COMMUNICATION ENGINE</span>
             </div>
 
             <StaggeredTitle

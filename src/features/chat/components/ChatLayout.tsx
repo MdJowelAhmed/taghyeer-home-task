@@ -13,14 +13,40 @@ interface ChatLayoutProps {
 }
 
 export function ChatLayout({ currentUserId }: ChatLayoutProps) {
-  // Initialize and synchronize global real-time socket lifecycle
-  useChatSocket();
-
   const [selectedConversationId, setSelectedConversationId] = useState<
     string | null
   >(null);
+  const [unreadMap, setUnreadMap] = useState<Record<string, number>>({});
+
+  const getConvId = (msg: any) => {
+    if (!msg) return null;
+    if (typeof msg.conversation === "string") return msg.conversation;
+    if (msg.conversation && typeof msg.conversation === "object") return msg.conversation._id;
+    return msg.conversationId || null;
+  };
+
+  // Initialize and synchronize global real-time socket lifecycle
+  useChatSocket((msg) => {
+    const convId = getConvId(msg);
+    if (convId && convId !== selectedConversationId) {
+      setUnreadMap((prev) => ({
+        ...prev,
+        [convId]: (prev[convId] || 0) + 1,
+      }));
+    }
+  });
 
   const { data: conversations = [], isLoading } = useConversations();
+
+  const handleSelectConversation = (id: string) => {
+    setSelectedConversationId(id);
+    setUnreadMap((prev) => {
+      if (!prev[id]) return prev;
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+  };
 
   const selectedConversation = useMemo(() => {
     return (
@@ -45,7 +71,8 @@ export function ChatLayout({ currentUserId }: ChatLayoutProps) {
           conversations={conversations}
           isLoading={isLoading}
           selectedConversationId={selectedConversationId}
-          onSelectConversation={(id) => setSelectedConversationId(id)}
+          onSelectConversation={handleSelectConversation}
+          unreadMap={unreadMap}
         />
       </div>
 

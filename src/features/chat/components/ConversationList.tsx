@@ -7,6 +7,7 @@ interface ConversationListProps {
   isLoading: boolean;
   selectedConversationId: string | null;
   onSelectConversation: (id: string) => void;
+  unreadMap?: Record<string, number>;
 }
 
 export function ConversationList({
@@ -14,6 +15,7 @@ export function ConversationList({
   isLoading,
   selectedConversationId,
   onSelectConversation,
+  unreadMap = {},
 }: ConversationListProps) {
   if (isLoading) {
     return (
@@ -48,13 +50,25 @@ export function ConversationList({
     );
   }
 
+  // Sort conversations: unread first, then by updatedAt timestamp descending
+  const sortedConversations = [...conversations].sort((a, b) => {
+    const unreadA = unreadMap[a._id] || 0;
+    const unreadB = unreadMap[b._id] || 0;
+    if (unreadA !== unreadB) return unreadB - unreadA;
+
+    const timeA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+    const timeB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+    return timeB - timeA;
+  });
+
   return (
     <div className="space-y-1 p-2">
-      {conversations.map((conv) => (
+      {sortedConversations.map((conv) => (
         <ConversationItem
           key={conv._id}
           conversation={conv}
           isSelected={selectedConversationId === conv._id}
+          unreadCount={unreadMap[conv._id] || 0}
           onSelect={onSelectConversation}
         />
       ))}

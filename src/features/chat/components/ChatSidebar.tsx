@@ -13,6 +13,7 @@ interface ChatSidebarProps {
   isLoading: boolean;
   selectedConversationId: string | null;
   onSelectConversation: (id: string) => void;
+  unreadMap?: Record<string, number>;
 }
 
 export function ChatSidebar({
@@ -20,6 +21,7 @@ export function ChatSidebar({
   isLoading,
   selectedConversationId,
   onSelectConversation,
+  unreadMap,
 }: ChatSidebarProps) {
   const [isGroupOpen, setIsGroupOpen] = useState(false);
 
@@ -61,6 +63,7 @@ export function ChatSidebar({
           isLoading={isLoading}
           selectedConversationId={selectedConversationId}
           onSelectConversation={onSelectConversation}
+          unreadMap={unreadMap}
         />
       </div>
 

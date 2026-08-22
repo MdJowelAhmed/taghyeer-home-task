@@ -20,7 +20,10 @@ import { CONVERSATIONS_QUERY_KEY } from "./useConversations";
  *
  * @param authToken - Optional explicit auth token override
  */
-export function useChatSocket(authToken?: string) {
+export function useChatSocket(
+  onNewMessage?: (msg: any) => void,
+  authToken?: string
+) {
   const queryClient = useQueryClient();
 
   const isConnected = useSyncExternalStore(
@@ -39,16 +42,17 @@ export function useChatSocket(authToken?: string) {
         queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY });
       });
 
-    // Global listener for new messages to update conversation preview and ordering
-    const unsubscribeNewMessage = chatSocketService.subscribeToNewMessage(() => {
+    // Global listener for new messages to update conversation preview, ordering, and unread counts
+    const unsubscribeNewMessage = chatSocketService.subscribeToNewMessage((msg) => {
       queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY });
+      if (onNewMessage) onNewMessage(msg);
     });
 
     return () => {
       unsubscribeConversation();
       unsubscribeNewMessage();
     };
-  }, [authToken, queryClient]);
+  }, [authToken, queryClient, onNewMessage]);
 
   return { isConnected, disconnect: disconnectSocket };
 }

@@ -9,10 +9,10 @@ import { HeroChatPreview } from "./HeroChatPreview";
 
 import { AnimatedBackgroundNodes } from "./AnimatedBackgroundNodes";
 import { StaggeredTitle } from "./StaggeredTitle";
-import heroImg from "@/assets/hero.jpg";
+import heroImg from "@/assets/hero2.webp";
 
 /**
- * LandingHero Component with framer-motion entrance and hero.jpg background image overlay.
+ * LandingHero Component with framer-motion entrance and hero2.webp background image overlay.
  */
 export function LandingHero() {
   return (
@@ -21,12 +21,12 @@ export function LandingHero() {
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
           src={heroImg}
-          alt="Hero Network Background"
+          alt="Hero Digital Globe Network Background"
           fill
           priority
-          className="object-cover object-center opacity-35 mix-blend-screen scale-105"
+          className="object-cover object-center opacity-40 mix-blend-screen scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/60 via-[#030712]/30 to-[#030712]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/50 via-[#030712]/25 to-[#030712]" />
       </div>
 
       <AnimatedBackgroundNodes />

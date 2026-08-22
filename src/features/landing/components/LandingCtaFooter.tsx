@@ -73,7 +73,7 @@ export function LandingCtaFooter() {
           </div>
 
           <p className="text-[11px] font-mono text-brand-muted">
-            &copy; {new Date().getFullYear()} Taghyeer Digital Systems. All rights reserved.
+            &copy; {new Date().getFullYear()} Md Jowel Ahmed • Taghyeer Digital Systems. All rights reserved.
           </p>
         </div>
       </footer>

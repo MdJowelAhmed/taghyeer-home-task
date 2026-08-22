@@ -330,6 +330,6 @@ Madagascar was not relevant to the application itself, but is included here beca
 
 ---
 
-## 📄 License
+## 📄 License & Author
 
-Developed for the **Taghyeer Digital Systems** home assignment. All rights reserved.
+Developed with ❤️ by **Md Jowel Ahmed** for the **Taghyeer Digital Systems** home assignment. All rights reserved.

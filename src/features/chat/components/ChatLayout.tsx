@@ -15,11 +15,32 @@ interface ChatLayoutProps {
 }
 
 export function ChatLayout({ currentUserId }: ChatLayoutProps) {
-  const [selectedConversationId, setSelectedConversationId] = useState<
-    string | null
-  >(null);
+  // Read initial active conversation ID from URL query params (?conversationId=xxx)
+  const getInitialConvId = () => {
+    if (typeof window === "undefined") return null;
+    const params = new URLSearchParams(window.location.search);
+    return params.get("conversationId") || params.get("id") || params.get("c") || null;
+  };
+
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(getInitialConvId);
   const [unreadMap, setUnreadMap] = useState<Record<string, number>>({});
   const [directMessageUser, setDirectMessageUser] = useState<TargetUser | null>(null);
+
+  // Sync URL search params without triggering page reload
+  const updateUrlParam = (id: string | null) => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    if (id) {
+      url.searchParams.set("conversationId", id);
+      url.searchParams.delete("id");
+      url.searchParams.delete("c");
+    } else {
+      url.searchParams.delete("conversationId");
+      url.searchParams.delete("id");
+      url.searchParams.delete("c");
+    }
+    window.history.replaceState(null, "", url.pathname + url.search);
+  };
 
   const getConvId = (msg: any) => {
     if (!msg) return null;
@@ -41,14 +62,17 @@ export function ChatLayout({ currentUserId }: ChatLayoutProps) {
 
   const { data: conversations = [], isLoading } = useConversations();
 
-  const handleSelectConversation = (id: string) => {
+  const handleSelectConversation = (id: string | null) => {
     setSelectedConversationId(id);
-    setUnreadMap((prev) => {
-      if (!prev[id]) return prev;
-      const next = { ...prev };
-      delete next[id];
-      return next;
-    });
+    updateUrlParam(id);
+    if (id) {
+      setUnreadMap((prev) => {
+        if (!prev[id]) return prev;
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
+    }
   };
 
   const handlePromptDirectMessage = (user: TargetUser) => {
@@ -96,7 +120,7 @@ export function ChatLayout({ currentUserId }: ChatLayoutProps) {
             key={selectedConversation._id}
             conversation={selectedConversation}
             currentUserId={currentUserId}
-            onBack={() => setSelectedConversationId(null)}
+            onBack={() => handleSelectConversation(null)}
             onSelectUser={handlePromptDirectMessage}
           />
         ) : (

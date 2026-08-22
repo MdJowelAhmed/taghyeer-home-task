@@ -3,7 +3,7 @@
 import { useCurrentUser, useLogout } from "@/features/auth/hooks/useAuth";
 import { ChatNavbar } from "./ChatNavbar";
 import { ChatLayout } from "./ChatLayout";
-import { Loader2 } from "lucide-react";
+import { Loader } from "@/components/ui/Loader";
 
 /**
  * ChatPageClient Component.
@@ -19,7 +19,7 @@ export function ChatPageClient() {
       <div className="min-h-screen flex items-center justify-center bg-brand-bg">
         <div className="flex flex-col items-center gap-3 text-sm text-purple-300 font-medium">
           <div className="p-3 rounded-2xl bg-purple-500/15 border border-purple-500/30 shadow-lg shadow-purple-950/60">
-            <Loader2 className="h-6 w-6 animate-spin text-brand-gradient-to" />
+            <Loader size={0.6} />
           </div>
           <span className="tracking-wide">
             Initializing Taghyeer Chat session...

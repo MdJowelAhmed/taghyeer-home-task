@@ -198,3 +198,40 @@ body {
     @apply font-sans;
   }
 }
+
+/* Custom Circle Rotation Loader */
+.loader {
+  --color-1: #8926fe;
+  --color-2: #d72dfc;
+  --size: 1px;
+
+  width: calc(48 * var(--size));
+  height: calc(48 * var(--size));
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border-top: calc(4 * var(--size)) solid var(--color-1);
+  border-right: calc(4 * var(--size)) solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(48 * var(--size));
+  height: calc(48 * var(--size));
+  border-radius: 50%;
+  border-bottom: calc(4 * var(--size)) solid var(--color-2);
+  border-left: calc(4 * var(--size)) solid transparent;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

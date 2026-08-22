@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Users, X, Plus, Check, Loader2 } from "lucide-react";
+import { Users, X, Plus, Check } from "lucide-react";
+import { Loader } from "@/components/ui/Loader";
 import { useUserSearch } from "../hooks/useUserSearch";
 import { useCreateGroupConversation } from "../hooks/useConversations";
 import { SearchUser } from "../services/user.service";
@@ -94,7 +95,7 @@ export function CreateGroupDialog({ isOpen, onClose, onSuccess }: CreateGroupDia
             <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search participants..." className="w-full h-9 px-3 rounded-xl bg-brand-sidebar border border-purple-500/20 text-sm text-brand-text placeholder:text-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-gradient-from" />
             {isLoading && (
               <div className="flex items-center gap-1 text-xs text-purple-600 dark:text-purple-300 pt-1">
-                <Loader2 className="h-3 w-3 animate-spin text-brand-gradient-to" />
+                <Loader size={0.25} />
                 <span>Searching...</span>
               </div>
             )}

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { UserPlus, X, Plus, Check, Loader2 } from "lucide-react";
+import { UserPlus, X, Plus, Check } from "lucide-react";
+import { Loader } from "@/components/ui/Loader";
 import { useUserSearch } from "../hooks/useUserSearch";
 import { useAddParticipants } from "../hooks/useConversations";
 import { SearchUser } from "../services/user.service";
@@ -117,7 +118,7 @@ export function AddMemberDialog({
             />
             {isLoading && (
               <div className="flex items-center gap-1 text-xs text-purple-600 dark:text-purple-300 pt-1">
-                <Loader2 className="h-3 w-3 animate-spin text-brand-gradient-to" />
+                <Loader size={0.25} />
                 <span>Searching...</span>
               </div>
             )}

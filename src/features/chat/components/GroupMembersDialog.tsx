@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { Users, X, UserMinus, ShieldCheck, LogOut, Loader2, ShieldPlus, MessageSquare } from "lucide-react";
+import { Users, X, UserMinus, ShieldCheck, LogOut, ShieldPlus, MessageSquare } from "lucide-react";
+import { Loader } from "@/components/ui/Loader";
 import { Conversation, Participant } from "../types/chat.types";
 import { useRemoveParticipant, usePromoteAdmin } from "../hooks/useConversations";
 import { UserAvatar } from "./UserAvatar";
@@ -175,7 +176,7 @@ export function GroupMembersDialog({
 
         <div className="p-3 bg-brand-sidebar border-t border-purple-500/15 flex justify-end">
           <Button variant="outline" size="sm" onClick={onClose} disabled={isBusy}>
-            {isBusy && <Loader2 className="h-3 w-3 animate-spin mr-1" />} Close
+            {isBusy && <Loader size={0.25} className="mr-1 inline-block" />} Close
           </Button>
         </div>
       </div>

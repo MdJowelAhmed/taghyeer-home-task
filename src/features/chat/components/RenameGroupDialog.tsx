@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Edit3, X, Loader2 } from "lucide-react";
+import { Edit3, X } from "lucide-react";
+import { Loader } from "@/components/ui/Loader";
 import { useRenameGroup } from "../hooks/useConversations";
 import { Button } from "@/components/ui/button";
 
@@ -94,7 +95,7 @@ export function RenameGroupDialog({
               isLoading={isPending}
               disabled={!name.trim() || isPending || name.trim() === currentName}
             >
-              {isPending && <Loader2 className="h-3 w-3 animate-spin mr-1" />} Save
+              {isPending && <Loader size={0.25} className="mr-1 inline-block" />} Save
             </Button>
           </div>
         </form>

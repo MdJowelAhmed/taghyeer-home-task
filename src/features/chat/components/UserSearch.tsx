@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, Loader2, UserPlus, X } from "lucide-react";
+import { Search, UserPlus, X } from "lucide-react";
+import { Loader } from "@/components/ui/Loader";
 import { useUserSearch } from "../hooks/useUserSearch";
 import { useCreateConversation } from "../hooks/useConversations";
 import { UserAvatar } from "./UserAvatar";
@@ -71,7 +72,7 @@ export function UserSearch({ onSelectConversation }: UserSearchProps) {
         <div className="absolute left-0 right-0 top-12 z-30 max-h-72 overflow-y-auto rounded-2xl border border-purple-500/30 bg-brand-card/95 backdrop-blur-xl p-1.5 shadow-2xl shadow-purple-950/20 dark:shadow-purple-950/80">
           {isLoading ? (
             <div className="flex items-center justify-center p-4 text-xs text-purple-600 dark:text-purple-300 gap-2">
-              <Loader2 className="h-4 w-4 animate-spin text-brand-gradient-to" />
+              <Loader size={0.35} />
               <span>Searching users...</span>
             </div>
           ) : users && users.length > 0 ? (

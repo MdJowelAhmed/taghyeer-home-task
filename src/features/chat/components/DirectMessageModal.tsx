@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { MessageSquare, X, Loader2, ArrowRight } from "lucide-react";
+import { MessageSquare, X, ArrowRight } from "lucide-react";
+import { Loader } from "@/components/ui/Loader";
 import { useCreateConversation } from "../hooks/useConversations";
 import { UserAvatar } from "./UserAvatar";
 import { Button } from "@/components/ui/button";
@@ -103,7 +104,7 @@ export function DirectMessageModal({
           >
             {isCreating ? (
               <>
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                <Loader size={0.3} />
                 <span>Connecting...</span>
               </>
             ) : (

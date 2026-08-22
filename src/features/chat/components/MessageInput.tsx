@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, FormEvent, KeyboardEvent } from "react";
-import { Send, Loader2 } from "lucide-react";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Loader } from "@/components/ui/Loader";
 
 interface MessageInputProps {
   onSendMessage: (text: string) => void;
@@ -47,7 +48,7 @@ export function MessageInput({ onSendMessage, isLoading }: MessageInputProps) {
           className="h-11 w-11 p-0 rounded-xl bg-brand-gradient hover:brightness-110 text-white shrink-0 shadow-lg shadow-purple-950/30 transition-all"
         >
           {isLoading ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
+            <Loader size={0.35} />
           ) : (
             <Send className="h-5 w-5" />
           )}

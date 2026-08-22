@@ -3,7 +3,8 @@
 import { useEffect, useLayoutEffect, useRef, useState, useCallback, useMemo } from "react";
 import { Message, Conversation, Participant } from "../types/chat.types";
 import { MessageBubble } from "./MessageBubble";
-import { MessageSquareDashed, Loader2, ArrowDown } from "lucide-react";
+import { MessageSquareDashed, ArrowDown } from "lucide-react";
+import { Loader } from "@/components/ui/Loader";
 
 const TOP_THRESHOLD = 100;
 
@@ -116,11 +117,9 @@ export function MessageList({
 
   if (isLoading && messages.length === 0) {
     return (
-      <div className="flex-1 flex items-center justify-center p-6">
-        <div className="flex items-center gap-2 text-sm text-purple-300">
-          <Loader2 className="h-5 w-5 animate-spin text-[#D72DFC]" />
-          <span>Loading messages...</span>
-        </div>
+      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-3">
+        <Loader size={1} />
+        {/* <span className="text-xs text-brand-muted font-mono animate-pulse">Loading messages...</span> */}
       </div>
     );
   }
@@ -149,7 +148,7 @@ export function MessageList({
       >
         {isLoadingOlder ? (
           <div className="flex items-center justify-center py-3 gap-2 text-xs text-purple-300">
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader size={0.35} />
             <span>Loading older messages...</span>
           </div>
         ) : !hasMore && messages.length > 0 ? (

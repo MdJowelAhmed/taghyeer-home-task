@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { Message } from "../types/chat.types";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { Message, Conversation, Participant } from "../types/chat.types";
 import { MessageBubble } from "./MessageBubble";
 import { MessageSquareDashed, Loader2, ArrowDown } from "lucide-react";
 
@@ -9,19 +9,20 @@ interface MessageListProps {
   messages: Message[];
   currentUserId?: string;
   isLoading?: boolean;
+  conversation?: Conversation;
+  currentUser?: { name?: string; phone?: string };
 }
 
 /**
  * MessageList Component with Smart Auto Scroll & Dynamic Unread Counter.
- * Features:
- * - Automatic scroll on initial load & self messages.
- * - Dynamic unread count badge ("3 new messages ↓") when scrolled up.
- * - Smooth scroll & badge reset on click or scroll-to-bottom.
+ * Resolves sender name and phone for UserAvatar tooltips on hover.
  */
 export function MessageList({
   messages,
   currentUserId,
   isLoading,
+  conversation,
+  currentUser,
 }: MessageListProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -30,6 +31,21 @@ export function MessageList({
 
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+
+  const participantsMap = useMemo(() => {
+    const map = new Map<string, Participant>();
+    if (conversation?.participant) {
+      map.set(conversation.participant._id, conversation.participant);
+    }
+    if (Array.isArray(conversation?.participants)) {
+      conversation.participants.forEach((p) => {
+        if (typeof p === "object" && p && "_id" in p) {
+          map.set((p as Participant)._id, p as Participant);
+        }
+      });
+    }
+    return map;
+  }, [conversation]);
 
   const scrollToBottom = useCallback((smooth = true) => {
     bottomRef.current?.scrollIntoView({
@@ -60,7 +76,7 @@ export function MessageList({
     const isInitialLoad = prevMessagesLengthRef.current === 0;
     const addedCount = messages.length - prevMessagesLengthRef.current;
     const lastMsg = messages[messages.length - 1];
-    const isSelfMsg = Boolean(lastMsg && currentUserId && lastMsg.sender === currentUserId);
+    const isSelfMsg = Boolean(lastMsg && currentUserId && (lastMsg.sender === currentUserId || (typeof lastMsg.sender === "object" && (lastMsg.sender as any)._id === currentUserId)));
 
     if (isInitialLoad) {
       scrollToBottom(false);
@@ -108,17 +124,32 @@ export function MessageList({
         onScroll={handleScroll}
         className="h-full overflow-y-auto p-4 md:p-6 space-y-1"
       >
-        {messages.map((msg) => (
-          <MessageBubble
-            key={msg._id}
-            message={msg}
-            isSelf={Boolean(currentUserId && msg.sender === currentUserId)}
-          />
-        ))}
+        {messages.map((msg) => {
+          const senderId = typeof msg.sender === "object" ? (msg.sender as any)._id : msg.sender;
+          const isSelf = Boolean(currentUserId && senderId === currentUserId);
+          const participantInfo = participantsMap.get(senderId);
+
+          const senderName = isSelf
+            ? currentUser?.name || "You"
+            : participantInfo?.name || (typeof msg.sender === "object" ? (msg.sender as any).name : "User");
+
+          const senderPhone = isSelf
+            ? currentUser?.phone || ""
+            : participantInfo?.phone || (typeof msg.sender === "object" ? (msg.sender as any).phone : "");
+
+          return (
+            <MessageBubble
+              key={msg._id}
+              message={msg}
+              isSelf={isSelf}
+              senderName={senderName}
+              senderPhone={senderPhone}
+            />
+          );
+        })}
         <div ref={bottomRef} />
       </div>
 
-      {/* Bonus Smart Floating Unread Message Badge */}
       {showScrollButton && (
         <button
           onClick={() => scrollToBottom(true)}

@@ -54,6 +54,7 @@ export function ChatWindow({
         messages={messages}
         currentUserId={currentUserId}
         isLoading={isMessagesLoading}
+        conversation={conversation}
       />
       <MessageInput onSendMessage={handleSend} isLoading={isSending} />
     </div>

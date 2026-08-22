@@ -21,7 +21,7 @@ export function SearchFeatureSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="md:col-span-6 space-y-4 text-center md:text-left order-2 md:order-1"
+            className="md:col-span-6 space-y-6 text-center md:text-left order-2 md:order-1"
           >
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-300 border border-purple-500/30 text-xs font-mono italic">
               <Search className="h-3.5 w-3.5 text-cyan-400" />
@@ -32,7 +32,7 @@ export function SearchFeatureSection() {
               Find someone. Start talking.
             </SectionTitle>
 
-            <p className="text-xs md:text-sm text-brand-muted leading-relaxed">
+            <p className="text-xs md:text-sm text-brand-muted leading-relaxed pt-1">
               Search any user across Taghyeer by name or phone number. One click initializes a direct conversation with full message history and status indicators.
             </p>
           </motion.div>

@@ -66,7 +66,7 @@ export function GroupFeatureSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="md:col-span-6 space-y-4 text-center md:text-left"
+            className="md:col-span-6 space-y-6 text-center md:text-left"
           >
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-300 border border-purple-500/30 text-xs font-mono italic">
               <Users className="h-3.5 w-3.5 text-fuchsia-400" />
@@ -77,7 +77,7 @@ export function GroupFeatureSection() {
               One conversation. Everyone included.
             </SectionTitle>
 
-            <p className="text-xs md:text-sm text-brand-muted leading-relaxed">
+            <p className="text-xs md:text-sm text-brand-muted leading-relaxed pt-1">
               Create groups, add members, promote admins, and keep your entire team in sync with unified group message streaming and real-time member updates.
             </p>
           </motion.div>

@@ -58,7 +58,7 @@ export function LandingHero() {
               className="text-4xl md:text-5xl lg:text-6xl text-white"
             />
 
-            <p className="text-sm md:text-base text-brand-muted leading-relaxed max-w-xl mx-auto lg:mx-0">
+            <p className="pt-2 text-sm md:text-base text-brand-muted leading-relaxed max-w-xl mx-auto lg:mx-0">
               Connect with people instantly, start private 1-to-1 chats, and bring your groups together in one sleek, real-time messaging space.
             </p>
 

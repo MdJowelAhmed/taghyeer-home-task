@@ -63,7 +63,7 @@ export function InteractiveDemoSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center space-y-3 mb-12"
+          className="text-center space-y-4 mb-14"
         >
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-300 border border-purple-500/30 text-xs font-mono italic">
             <Sparkles className="h-3.5 w-3.5 text-fuchsia-400" />
@@ -72,7 +72,7 @@ export function InteractiveDemoSection() {
           <SectionTitle align="center" className="text-3xl md:text-4xl font-mono italic">
             See it happen.
           </SectionTitle>
-          <p className="text-xs md:text-sm text-brand-muted">
+          <p className="text-xs md:text-sm text-brand-muted pt-1">
             Try typing a message in the live widget below to test instant message delivery.
           </p>
         </motion.div>

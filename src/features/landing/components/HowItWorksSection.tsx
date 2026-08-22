@@ -38,12 +38,12 @@ export function HowItWorksSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center max-w-2xl mx-auto space-y-3 mb-16"
+          className="text-center max-w-2xl mx-auto space-y-4 mb-16"
         >
           <SectionTitle align="center" className="text-3xl md:text-4xl font-mono italic">
             How Taghyeer Works
           </SectionTitle>
-          <p className="text-xs md:text-sm text-brand-muted">
+          <p className="text-xs md:text-sm text-brand-muted pt-1">
             Three simple steps to start streaming real-time conversations.
           </p>
         </motion.div>

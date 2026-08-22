@@ -35,7 +35,7 @@ export function LandingCtaFooter() {
               Your next conversation starts here.
             </SectionTitle>
 
-            <p className="text-xs md:text-sm text-brand-muted max-w-md mx-auto leading-relaxed">
+            <p className="text-xs md:text-sm text-brand-muted max-w-md mx-auto leading-relaxed pt-1">
               Simple messaging. Instant real-time connection. Direct 1-to-1 and group chats without the waiting.
             </p>
 

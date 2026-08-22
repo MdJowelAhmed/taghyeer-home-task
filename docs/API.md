@@ -1,43 +1,91 @@
+# Chat API Documentation
 
+API contract and real-time Socket.io specification for the Taghyeer Chat frontend application.
 
+## Table of Contents
+- [Base URLs](#base-urls)
+- [Authentication](#authentication)
+- [Health Check](#health-check)
+- [Auth Endpoints](#auth-endpoints)
+- [Users Search](#users-search)
+- [Conversations](#conversations)
+- [Group Management](#group-management)
+- [Messages & Pagination](#messages--pagination)
+- [Socket.io Real-Time Events](#socketio-real-time-events)
+- [HTTP Status Codes & Errors](#http-status-codes--errors)
+- [Client Integration Notes](#client-integration-notes)
+- [Environment Variables](#environment-variables)
 
-API Documentation
-REST API and Socket.io contract used by the Chat Application.
+---
 
-Base URLs
-REST API
-All REST endpoints are relative to:
+## Base URLs
 
-NEXT_PUBLIC_API_BASE_URL
-Current value:
+- **REST API Base:** `https://frontend-task-chatapp.onrender.com/api`
+- **Socket.io Host:** `https://frontend-task-chatapp.onrender.com`
 
-https://frontend-task-chatapp.onrender.com/api
-Socket.io
-Socket.io connection URL:
+---
 
-NEXT_PUBLIC_API_SOCKET_URL
-Current value:
+## Authentication
 
-https://frontend-task-chatapp.onrender.com
-Authentication
+Protected endpoints require a JWT Bearer token in the `Authorization` header:
+
+```http
+Authorization: Bearer <token>
+```
+
+For real-time connections, the same token is passed in the Socket.io handshake `auth` object:
+
+```js
+const socket = io("https://frontend-task-chatapp.onrender.com", {
+  auth: { token: "<token>" },
+  transports: ["websocket", "polling"],
+});
+```
+
+---
+
+## Health Check
+
+### `GET /health`
+Checks backend service availability and connectivity.
+
+> **Observed Route Behavior:**  
+> The health check route is mounted at the host root origin (`https://frontend-task-chatapp.onrender.com/health`), returning `200 OK {"status":"ok"}`. Requesting `/api/health` returns `404 {"error": {"message": "Route not found", "code": "NOT_FOUND"}}`.
+
+**Request:**
+```http
+GET /health
+```
+
+**Response (200 OK):**
+```json
+{
+  "status": "ok"
+}
+```
+
+---
+
+## Auth Endpoints
+
+### `POST /auth/login`
+Authenticates an existing user or registers a new user with phone and name.
+
+**Request:**
+```http
 POST /auth/login
-Authenticates a user using their phone number and name.
-
-Request
-Method: POST
-
-Endpoint:
-
-/auth/login
-Request Body:
+Content-Type: application/json
 
 {
   "phone": "01478523698",
   "name": "Jowel"
 }
-Response
+```
+
+**Response (200 OK / 201 Created):**
+```json
 {
-  "token": "<JWT_TOKEN>",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "user": {
     "_id": "6a883f82e5d6aac975220e70",
     "name": "Jowel",
@@ -45,65 +93,54 @@ Response
     "createdAt": "2026-08-21T12:07:30.838Z"
   }
 }
-Response Fields
-Field	Type	Description
-token	string	JWT authentication token
-user	object	Authenticated user information
-user._id	string	Unique user ID
-user.name	string	User name
-user.phone	string	User phone number
-user.createdAt	string	User creation timestamp
+```
+
+---
+
+### `GET /auth/me`
+Fetches the profile of the currently authenticated user.
+
+**Request:**
+```http
 GET /auth/me
-Returns the currently authenticated user's information.
+Authorization: Bearer <token>
+```
 
-Request
-Method: GET
-
-Endpoint:
-
-/auth/me
-Authentication
-This endpoint requires a JWT Bearer token.
-
-Authorization: Bearer <JWT_TOKEN>
-Response
+**Response (200 OK):**
+```json
 {
   "_id": "6a883f82e5d6aac975220e70",
   "name": "Jowel",
   "phone": "01478523698",
   "createdAt": "2026-08-21T12:07:30.838Z"
 }
-Response Fields
-Field	Type	Description
-_id	string	Unique user ID
-name	string	User name
-phone	string	User phone number
-createdAt	string	User creation timestamp
-Error Response — No Token
-Status: 400
+```
 
+**Error (400 / 401 when token is missing):**
+```json
 {
   "error": {
     "message": "No token provided",
     "code": "NO_TOKEN"
   }
 }
-Users
-GET /users/search
-Searches for users by name or supported search query.
+```
 
-Request
-Method: GET
+---
 
-Endpoint:
+## Users Search
 
-/users/search
-Query Parameters
-Parameter	Type	Required	Description
-q	string	Yes	Search query
-Example
-/users/search?q=Jow
-Response
+### `GET /users/search?q=<query>`
+Searches registered users by name or phone prefix.
+
+**Request:**
+```http
+GET /users/search?q=Jow
+Authorization: Bearer <token>
+```
+
+**Response (200 OK):**
+```json
 [
   {
     "_id": "6a883f82e5d6aac975220e70",
@@ -111,33 +148,35 @@ Response
     "phone": "01478523698"
   }
 ]
-Response Fields
-Field	Type	Description
-_id	string	Unique user ID
-name	string	User name
-phone	string	User phone number
-Conversations
+```
+
+---
+
+## Conversations
+
+### `GET /conversations`
+Retrieves all direct and group conversations for the logged-in user.
+
+**Request:**
+```http
 GET /conversations
-Returns the conversations available to the authenticated user.
+Authorization: Bearer <token>
+```
 
-Request
-Method: GET
-
-Endpoint:
-
-/conversations
-Authentication
-This endpoint requires a JWT Bearer token.
-
-Authorization: Bearer <JWT_TOKEN>
-Response
+**Response (200 OK):**
+```json
 {
   "data": [
     {
       "_id": "6a88503fe5d6aac975223f88",
       "type": "direct",
-      "lastMessage": {},
-      "updatedAt": "2026-08-21T13:18:55.986Z",
+      "lastMessage": {
+        "_id": "6a8850a0e5d6aac975224077",
+        "text": "Hi!",
+        "sender": "6a8844fce5d6aac975221b2c",
+        "createdAt": "2026-08-21T13:20:32.757Z"
+      },
+      "updatedAt": "2026-08-21T13:20:32.757Z",
       "participant": {
         "_id": "6a8833dae5d6aac97521f016",
         "name": "Kyle Reese",
@@ -146,80 +185,65 @@ Response
     }
   ]
 }
-Response Fields
-Field	Type	Description
-data	array	List of conversations
-data[]._id	string	Unique conversation ID
-data[].type	string	Conversation type, currently direct
-data[].lastMessage	object	Last message in the conversation
-data[].updatedAt	string	Last conversation update timestamp
-data[].participant	object	Other participant in a direct conversation
-data[].participant._id	string	Participant user ID
-data[].participant.name	string	Participant name
-data[].participant.phone	string	Participant phone number
+```
+
+---
+
+### `POST /conversations`
+Starts a 1-on-1 direct conversation with another user (or returns the existing one).
+
+**Request:**
+```http
 POST /conversations
-Creates a direct conversation with another user.
+Authorization: Bearer <token>
+Content-Type: application/json
 
-Request
-Method: POST
-
-Endpoint:
-
-/conversations
-Authentication
-This endpoint requires a JWT Bearer token.
-
-Authorization: Bearer <JWT_TOKEN>
-Request Body
 {
   "userId": "6a8833dae5d6aac97521f016"
 }
-Response
+```
+
+**Response (200 OK / 201 Created):**
+```json
 {
   "_id": "6a88503fe5d6aac975223f88",
+  "type": "direct",
   "participants": [
     "6a8844fce5d6aac975221b2c",
     "6a8833dae5d6aac97521f016"
   ],
   "createdAt": "2026-08-21T13:18:55.986Z"
 }
-Response Fields
-Field	Type	Description
-_id	string	Unique conversation ID
-participants	string[]	User IDs participating in the conversation
-createdAt	string	Conversation creation timestamp
+```
 
+---
+
+## Group Management
+
+### `POST /conversations/group`
+Creates a new group conversation. The creator is automatically added as admin.
+
+**Request:**
+```http
 POST /conversations/group
-Creates a group conversation with multiple participants.
+Authorization: Bearer <token>
+Content-Type: application/json
 
-Request
-Method: POST
-
-Endpoint:
-/conversations/group
-
-Authentication
-This endpoint requires a JWT Bearer token.
-Authorization: Bearer <JWT_TOKEN>
-
-Request Body:
-```json
 {
-  "name": "Project 3 Team",
+  "name": "Product Engineering",
   "participantIds": [
     "6a8836c4e5d6aac97521f774",
-    "6a882e06e5d6aac97521e841",
-    "6a883edbe5d6aac975220d2a"
+    "6a882e06e5d6aac97521e841"
   ]
 }
 ```
 
-Response:
+**Response (201 Created):**
 ```json
 {
   "_id": "6a885fcce5d6aac975228715",
   "type": "group",
-  "name": "Project 3 Team",
+  "name": "Product Engineering",
   "createdBy": "6a8844fce5d6aac975221b2c",
   "admins": [
     "6a8844fce5d6aac975221b2c"
@@ -229,6 +253,11 @@ Response:
       "_id": "6a8844fce5d6aac975221b2c",
       "name": "Jowel",
       "phone": "0107852398"
+    },
+    {
+      "_id": "6a8836c4e5d6aac97521f774",
+      "name": "Shariful Alam",
+      "phone": "+8801700000000"
     }
   ],
   "createdAt": "2026-08-21T14:25:16.314Z",
@@ -236,318 +265,127 @@ Response:
 }
 ```
 
-Response Fields
-Field	Type	Description
-_id	string	Unique group conversation ID
-type	string	Conversation type, "group"
-name	string	Group name
-createdBy	string	User ID of the creator
-admins	string[]	List of admin user IDs
-participants	object[]	List of participant user objects
-createdAt	string	Creation timestamp
-updatedAt	string	Last update timestamp
+---
 
-POST /conversations/{id}/participants
-Adds one or more members to an existing group conversation (admins only).
+### `POST /conversations/:id/participants`
+Adds members to a group (admin only).
 
-Request
-Method: POST
+**Request:**
+```http
+POST /conversations/6a885fcce5d6aac975228715/participants
+Authorization: Bearer <token>
+Content-Type: application/json
 
-Endpoint:
-/conversations/{id}/participants
-
-Authentication
-This endpoint requires a JWT Bearer token.
-Authorization: Bearer <JWT_TOKEN>
-
-Path Parameters:
-Parameter	Type	Required	Description
-id	string	Yes	The group conversation ID
-
-Request Body:
-```json
 {
-  "userIds": [
-    "6a882e06e5d6aac97521e841"
-  ]
+  "userIds": ["6a882e06e5d6aac97521e841"]
 }
 ```
 
-Response:
-```json
-{
-  "_id": "6a885fcce5d6aac975228715",
-  "type": "group",
-  "name": "Project 3 Team",
-  "createdBy": "6a8844fce5d6aac975221b2c",
-  "admins": [
-    "6a8844fce5d6aac975221b2c"
-  ],
-  "participants": [
-    {
-      "_id": "6a8844fce5d6aac975221b2c",
-      "name": "Jowel",
-      "phone": "0107852398"
-    },
-    {
-      "_id": "6a8836c4e5d6aac97521f774",
-      "name": "shariful alam",
-      "phone": "+8801700000000"
-    },
-    {
-      "_id": "6a882e06e5d6aac97521e841",
-      "name": "kabita",
-      "phone": "654564564565"
-    },
-    {
-      "_id": "6a883edbe5d6aac975220d2a",
-      "name": "kamrul islam",
-      "phone": "+8801709678345"
-    }
-  ],
-  "createdAt": "2026-08-21T14:25:16.314Z",
-  "updatedAt": "2026-08-21T14:26:52.934Z"
-}
+**Response (200 OK):** Returns the updated group conversation object.
+
+---
+
+### `DELETE /conversations/:id/participants/:userId`
+Removes a member from a group (admin only), or leaves the group when `userId` is own ID.
+
+**Request:**
+```http
+DELETE /conversations/6a885fcce5d6aac975228715/participants/6a882e06e5d6aac97521e841
+Authorization: Bearer <token>
 ```
 
-Response Fields
-Field	Type	Description
-_id	string	Unique group conversation ID
-type	string	Conversation type, "group"
-name	string	Group name
-createdBy	string	User ID of the creator
-admins	string[]	List of admin user IDs
-participants	object[]	List of updated participant user objects
-createdAt	string	Creation timestamp
-updatedAt	string	Last update timestamp
+**Response (200 OK):** Returns the updated group conversation object.
 
-DELETE /conversations/{id}/participants/{userId}
-Removes a member from a group (admins only), or allows a user to leave a group by passing their own user ID.
+---
 
-Request
-Method: DELETE
+### `POST /conversations/:id/admins`
+Promotes a member to group admin (admin only).
 
-Endpoint:
-/conversations/{id}/participants/{userId}
+**Request:**
+```http
+POST /conversations/6a885fcce5d6aac975228715/admins
+Authorization: Bearer <token>
+Content-Type: application/json
 
-Authentication
-This endpoint requires a JWT Bearer token.
-Authorization: Bearer <JWT_TOKEN>
-
-Path Parameters:
-Parameter	Type	Required	Description
-id	string	Yes	The group conversation ID
-userId	string	Yes	The ID of the user to remove (or own ID to leave)
-
-Response:
-```json
-{
-  "_id": "6a885fcce5d6aac975228715",
-  "type": "group",
-  "name": "Project 3 Team",
-  "createdBy": "6a8844fce5d6aac975221b2c",
-  "admins": [
-    "6a8844fce5d6aac975221b2c"
-  ],
-  "participants": [
-    {
-      "_id": "6a8844fce5d6aac975221b2c",
-      "name": "Jowel",
-      "phone": "0107852398"
-    }
-  ],
-  "createdAt": "2026-08-21T14:25:16.314Z",
-  "updatedAt": "2026-08-21T14:26:52.934Z"
-}
-```
-
-Response Fields
-Field	Type	Description
-_id	string	Unique group conversation ID
-type	string	Conversation type, "group"
-name	string	Group name
-createdBy	string	User ID of the creator
-admins	string[]	List of admin user IDs
-participants	object[]	List of remaining participant user objects
-createdAt	string	Creation timestamp
-updatedAt	string	Last update timestamp
-
-POST /conversations/{id}/admins
-Promotes an existing group member to admin (admins only).
-
-Request
-Method: POST
-
-Endpoint:
-/conversations/{id}/admins
-
-Authentication
-This endpoint requires a JWT Bearer token.
-Authorization: Bearer <JWT_TOKEN>
-
-Path Parameters:
-Parameter	Type	Required	Description
-id	string	Yes	The group conversation ID
-
-Request Body:
-```json
 {
   "userId": "6a8836c4e5d6aac97521f774"
 }
 ```
 
-Response:
-```json
+**Response (200 OK):** Returns the updated group conversation object with target user added to `admins`.
+
+---
+
+### `PATCH /conversations/:id`
+Renames a group conversation (admin only).
+
+**Request:**
+```http
+PATCH /conversations/6a885fcce5d6aac975228715
+Authorization: Bearer <token>
+Content-Type: application/json
+
 {
-  "_id": "6a885fcce5d6aac975228715",
-  "type": "group",
-  "name": "Project 3 Team",
-  "createdBy": "6a8844fce5d6aac975221b2c",
-  "admins": [
-    "6a8844fce5d6aac975221b2c",
-    "6a8836c4e5d6aac97521f774"
-  ],
-  "participants": [
-    {
-      "_id": "6a8844fce5d6aac975221b2c",
-      "name": "Jowel",
-      "phone": "0107852398"
-    },
-    {
-      "_id": "6a8836c4e5d6aac97521f774",
-      "name": "shariful alam",
-      "phone": "+8801700000000"
-    },
-    {
-      "_id": "6a883edbe5d6aac975220d2a",
-      "name": "kamrul islam",
-      "phone": "+8801709678345"
-    }
-  ],
-  "createdAt": "2026-08-21T14:25:16.314Z",
-  "updatedAt": "2026-08-21T14:49:11.275Z"
+  "name": "Core Platform Team"
 }
 ```
 
-Response Fields
-Field	Type	Description
-_id	string	Unique group conversation ID
-type	string	Conversation type, "group"
-name	string	Group name
-createdBy	string	User ID of the creator
-admins	string[]	List of admin user IDs
-participants	object[]	List of participant user objects
-createdAt	string	Creation timestamp
-updatedAt	string	Last update timestamp
+**Response (200 OK):** Returns the updated group conversation object with new name.
 
-PATCH /conversations/{id}
-Renames a group conversation (admins only).
+---
 
-Request
-Method: PATCH
+## Messages & Pagination
 
-Endpoint:
-/conversations/{id}
+### `POST /messages`
+Sends a message to any conversation (direct or group).
 
-Authentication
-This endpoint requires a JWT Bearer token.
-Authorization: Bearer <JWT_TOKEN>
-
-Path Parameters:
-Parameter	Type	Required	Description
-id	string	Yes	The group conversation ID
-
-Request Body:
-```json
-{
-  "name": "Renamed Team"
-}
-```
-
-Response:
-```json
-{
-  "_id": "6a885fcce5d6aac975228715",
-  "type": "group",
-  "name": "Renamed Team",
-  "createdBy": "6a8844fce5d6aac975221b2c",
-  "admins": [
-    "6a8844fce5d6aac975221b2c"
-  ],
-  "participants": [
-    {
-      "_id": "6a8844fce5d6aac975221b2c",
-      "name": "Jowel",
-      "phone": "0107852398"
-    }
-  ],
-  "createdAt": "2026-08-21T14:25:16.314Z",
-  "updatedAt": "2026-08-21T14:55:00.000Z"
-}
-```
-
-Response Fields
-Field	Type	Description
-_id	string	Unique group conversation ID
-type	string	Conversation type, "group"
-name	string	Updated group name
-createdBy	string	User ID of the creator
-admins	string[]	List of admin user IDs
-participants	object[]	List of participant user objects
-createdAt	string	Creation timestamp
-updatedAt	string	Last update timestamp
-
-Messages
+**Request:**
+```http
 POST /messages
-Sends a message to a conversation.
+Authorization: Bearer <token>
+Content-Type: application/json
 
-Request
-Method: POST
-
-Endpoint:
-
-/messages
-Authentication
-This endpoint requires a JWT Bearer token.
-
-Authorization: Bearer <JWT_TOKEN>
-Request Body
 {
   "conversationId": "6a88503fe5d6aac975223f88",
-  "text": "Hi!"
+  "text": "Hello team!"
 }
-Response
+```
+
+**Response (201 Created):**
+```json
 {
   "_id": "6a8850a0e5d6aac975224077",
   "conversation": "6a88503fe5d6aac975223f88",
   "sender": "6a8844fce5d6aac975221b2c",
-  "text": "Hi!",
+  "text": "Hello team!",
   "createdAt": "2026-08-21T13:20:32.757Z"
 }
-Response Fields
-GET /conversations/{id}/messages
-Fetches the message history of a specific conversation (1-to-1 or group).
+```
 
-Request
-Method: GET
+| Field | Type | Description |
+|---|---|---|
+| `_id` | string | Unique message ID |
+| `conversation` | string | Target conversation ID |
+| `sender` | string | Sender user ID |
+| `text` | string | Message text content |
+| `createdAt` | string | ISO timestamp of message creation |
 
-Endpoint:
-/conversations/{id}/messages
+---
 
-Authentication
-This endpoint requires a JWT Bearer token.
-Authorization: Bearer <JWT_TOKEN>
+### `GET /conversations/:id/messages`
+Fetches conversation message history with cursor pagination.
 
-Path Parameters:
-Parameter	Type	Required	Description
-id	string	Yes	Conversation ID
+**Request:**
+```http
+GET /conversations/6a887630e5d6aac975231069/messages?limit=20&before=6a8879a2e5d6aac9752332a5
+Authorization: Bearer <token>
+```
 
-Query Parameters:
-Parameter	Type	Required	Description
-limit	number	No	Maximum messages to return (default 50)
-before	string	No	Cursor pagination timestamp/ID
+**Query Parameters:**
+- `limit` *(optional, default 50)*: Number of messages to return per batch.
+- `before` *(optional)*: Cursor ID/timestamp of the oldest loaded message to fetch older items.
 
-Response
+**Response (200 OK):**
 ```json
 {
   "messages": [
@@ -563,44 +401,43 @@ Response
 }
 ```
 
-Response Fields
-Field	Type	Description
-messages	array	List of message objects (sorted newest first)
-hasMore	boolean	Whether older messages exist for pagination
+### Cursor Pagination Workflow
+1. **Initial load:** Client calls `GET /conversations/:id/messages?limit=20` without cursor.
+2. **Scroll to top:** When user scrolls near top, client grabs the oldest message ID and requests `GET /conversations/:id/messages?limit=20&before=<oldestId>`.
+3. **Prepend & Preserve Scroll:** Client prepends older records while adjusting `scrollTop` so the user's reading position doesn't jump.
+4. **End of history:** When `hasMore: false`, further requests are stopped.
 
-Socket.io
+---
 
+## Socket.io Real-Time Events
 
-Connection Handshake
-Connect to the server's root origin (NOT the `/api` base used for REST). The socket lives at the host root (`NEXT_PUBLIC_API_SOCKET_URL`):
+### Connection Handshake
+Client authenticates during connection handshake:
 
 ```typescript
-const socket = io("https://frontend-task-chatapp.onrender.com", {
-  auth: { token: "<JWT_TOKEN>" },
+const socket = io(process.env.NEXT_PUBLIC_API_SOCKET_URL, {
+  auth: { token: "<jwt_token>" },
   transports: ["websocket", "polling"],
 });
 ```
 
-Authentication is required during the handshake. An invalid or missing token is rejected by the server (`Socket connect error: No token provided`).
+### Client -> Server Events
 
-Client-to-Server Events
-
-`message:send`
-Sends a message to a conversation.
-- Payload:
-```json
-{
-  "conversationId": "6a88503fe5d6aac975223f88",
-  "text": "Hello world!"
-}
+#### `message:send`
+Dispatches a real-time message to a conversation.
+```typescript
+socket.emit("message:send", {
+  conversationId: "6a88503fe5d6aac975223f88",
+  text: "Hello!"
+}, (ack) => {
+  // Callback status: { ok: true }
+});
 ```
-- Optional Ack Callback: receives `{ ok: true }` upon success.
 
-Server-to-Client Events
+### Server -> Client Events
 
-`message:new`
-Fires when a new message arrives in a conversation the user is part of (1-to-1 or group).
-- Payload:
+#### `message:new`
+Broadcasted when a new message is sent in any conversation the user belongs to.
 ```json
 {
   "id": "6a88773be5d6aac975231b34",
@@ -611,26 +448,56 @@ Fires when a new message arrives in a conversation the user is part of (1-to-1 o
 }
 ```
 
-`conversation:updated`
-Fires when a group conversation you're in changes (created, renamed, or members/admins changed).
-- Payload: The updated `GroupConversation` object containing current members, admins, and metadata.
+#### `conversation:updated`
+Broadcasted when a group is modified (renamed, members added/removed, admin promoted).
+- **Payload:** Full updated `GroupConversation` object.
 
+---
 
-Environment Variables
-The application uses the following environment variables:
+## HTTP Status Codes & Errors
 
+| Status | Meaning | Typical Scenario |
+|---|---|---|
+| **200 OK** | Success | Fetching data, updates, deletions |
+| **201 Created** | Created | User login/signup, new conversation, new message |
+| **400 Bad Request** | Validation Error | Missing required fields, invalid phone/name |
+| **401 Unauthorized** | Auth Failed | Missing or invalid Bearer token |
+| **403 Forbidden** | Permission Denied | Non-admin trying to add/remove members or rename group |
+| **404 Not Found** | Not Found | Target user or conversation does not exist |
+| **500 Server Error** | Server Error | Internal backend failure |
+
+**Standard Error Payload:**
+```json
+{
+  "error": {
+    "message": "Only group admins can add participants",
+    "code": "FORBIDDEN"
+  }
+}
+```
+
+---
+
+## Client Integration Notes
+
+1. **`createdAt` Format Normalization:**
+   - REST responses return `createdAt` as an **ISO 8601 string** (`"2026-08-21T13:20:32.757Z"`).
+   - Socket.io `message:new` event returns `createdAt` as a **Unix timestamp number** (`1787328315263`).
+   - *Frontend Handling:* Client passes all timestamps through `new Date(createdAt)` to handle both formats seamlessly.
+
+2. **Message ID Field Mapping:**
+   - REST returns `_id`, while some Socket payloads use `id`.
+   - *Frontend Handling:* Client maps `_id: msg._id || msg.id` upon receiving socket events.
+
+3. **Sender Resolution:**
+   - In direct messages or certain event payloads, `sender` may be a string ID or populated user object.
+   - *Frontend Handling:* Resolved safely using `typeof sender === "object" ? sender._id : sender`.
+
+---
+
+## Environment Variables
+
+```env
 NEXT_PUBLIC_API_BASE_URL=https://frontend-task-chatapp.onrender.com/api
 NEXT_PUBLIC_API_SOCKET_URL=https://frontend-task-chatapp.onrender.com
-Variable	Purpose
-NEXT_PUBLIC_API_BASE_URL	Base URL for REST API requests
-NEXT_PUBLIC_API_SOCKET_URL	Base URL for Socket.io connection
-Notes
-API URLs must not be hardcoded inside feature components.
-
-REST API communication should go through the application's API/service layer.
-
-Authentication state should be handled centrally.
-
-Socket.io communication should be isolated from UI components.
-
-API contracts should be updated here whenever a new endpoint or Socket.io event is verified.
+```

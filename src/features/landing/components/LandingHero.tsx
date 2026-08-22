@@ -6,15 +6,16 @@ import { Sparkles, MessageSquare, ArrowDown, ShieldCheck, Zap } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { HeroChatPreview } from "./HeroChatPreview";
 
+import { AnimatedBackgroundNodes } from "./AnimatedBackgroundNodes";
+import { StaggeredTitle } from "./StaggeredTitle";
+
 /**
  * LandingHero Component with framer-motion entrance and ultra-modern glowing mesh gradients.
  */
 export function LandingHero() {
   return (
     <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden bg-[#030712]">
-      {/* Radial Glowing Background Beams */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full bg-gradient-to-tr from-purple-900/30 via-fuchsia-900/20 to-indigo-900/30 blur-[160px] pointer-events-none" />
-      <div className="absolute top-10 right-10 w-[400px] h-[400px] rounded-full bg-cyan-900/20 blur-[130px] pointer-events-none" />
+      <AnimatedBackgroundNodes />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -30,12 +31,11 @@ export function LandingHero() {
               <span className="tracking-wide">REAL-TIME COMMUNICATION ENGINE</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
-              Real conversations.{" "}
-              <span className="bg-gradient-to-r from-purple-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
-                Without the waiting.
-              </span>
-            </h1>
+            <StaggeredTitle
+              text="Real conversations."
+              highlightText="Without the waiting."
+              className="text-4xl md:text-5xl lg:text-6xl text-white"
+            />
 
             <p className="text-sm md:text-base text-slate-300 leading-relaxed max-w-xl mx-auto lg:mx-0">
               Connect with people instantly, start private 1-to-1 chats, and bring your groups together in one sleek, real-time messaging space.

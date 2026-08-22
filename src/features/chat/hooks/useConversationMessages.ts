@@ -22,10 +22,18 @@ export const getMessagesQueryKey = (conversationId: string) => [
 export function useConversationMessages(conversationId: string) {
   const queryClient = useQueryClient();
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(Boolean(conversationId));
   const [isLoadingOlder, setIsLoadingOlder] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const initializedFor = useRef<string | null>(null);
+
+  // Reset when conversation changes
+  useEffect(() => {
+    if (initializedFor.current !== conversationId) {
+      setIsLoading(Boolean(conversationId));
+      setMessages([]);
+    }
+  }, [conversationId]);
 
   // Initial load whenever conversation changes
   useEffect(() => {
@@ -33,21 +41,15 @@ export function useConversationMessages(conversationId: string) {
     initializedFor.current = conversationId;
 
     setIsLoading(true);
-    setMessages([]);
     setHasMore(false);
 
     messageService
       .getConversationMessages(conversationId, PAGE_LIMIT)
       .then((res) => {
-        setMessages([...( res.messages || [])].reverse());
+        setMessages([...(res.messages || [])].reverse());
         setHasMore(res.hasMore ?? false);
       })
       .finally(() => setIsLoading(false));
-  }, [conversationId]);
-
-  // Reset when conversation changes (next render picks it up via ref)
-  useEffect(() => {
-    initializedFor.current = null;
   }, [conversationId]);
 
   /** Prepend older messages (scroll-up pagination) */

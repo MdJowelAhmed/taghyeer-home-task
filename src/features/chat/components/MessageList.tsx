@@ -115,18 +115,29 @@ export function MessageList({
     if (c.scrollTop <= TOP_THRESHOLD) triggerLoadOlder();
   }, [triggerLoadOlder]);
 
-  if (isLoading && messages.length === 0) {
+  // Grace timer for empty state to prevent brief flashes before messages load
+  const [showEmptyState, setShowEmptyState] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && messages.length === 0) {
+      const timer = setTimeout(() => setShowEmptyState(true), 200);
+      return () => clearTimeout(timer);
+    } else {
+      setShowEmptyState(false);
+    }
+  }, [isLoading, messages.length]);
+
+  if (isLoading || (messages.length === 0 && !showEmptyState)) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-3">
         <Loader size={1} />
-        {/* <span className="text-xs text-brand-muted font-mono animate-pulse">Loading messages...</span> */}
       </div>
     );
   }
 
-  if (!isLoading && messages.length === 0) {
+  if (!isLoading && messages.length === 0 && showEmptyState) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-2.5">
+      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-2.5 animate-in fade-in duration-200">
         <div className="p-3.5 rounded-2xl bg-purple-500/15 text-[#D72DFC] border border-purple-500/25 shadow-lg">
           <MessageSquareDashed className="h-6 w-6" />
         </div>

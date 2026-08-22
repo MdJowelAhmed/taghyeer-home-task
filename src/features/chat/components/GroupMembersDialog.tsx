@@ -104,6 +104,7 @@ export function GroupMembersDialog({
                     name={member.name}
                     phone={member.phone}
                     size="sm"
+                    showTooltip={!isSelf}
                     onClick={() => handleMemberClick(member)}
                   />
                   <div className="truncate cursor-pointer" onClick={() => handleMemberClick(member)}>

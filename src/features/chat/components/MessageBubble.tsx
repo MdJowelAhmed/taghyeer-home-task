@@ -86,7 +86,7 @@ export function MessageBubble({
           name={senderName}
           phone={senderPhone}
           size="sm"
-          showTooltip={true}
+          showTooltip={false}
           alignTooltip="right"
           className="mb-0.5"
         />

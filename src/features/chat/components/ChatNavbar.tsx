@@ -33,7 +33,7 @@ export function ChatNavbar({ user, onLogout }: ChatNavbarProps) {
       <div className="flex items-center gap-2.5 md:gap-3">
         {user && (
           <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-brand-card/80 border border-purple-500/25 shadow-inner">
-            <UserAvatar name={user.name} size="sm" isOnline={true} />
+            <UserAvatar name={user.name} size="sm" isOnline={true} showTooltip={false} />
             <div className="text-left hidden sm:block">
               <p className="text-xs font-semibold text-brand-text leading-none">
                 {user.name}

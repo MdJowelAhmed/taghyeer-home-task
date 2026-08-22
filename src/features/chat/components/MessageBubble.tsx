@@ -45,7 +45,7 @@ export function MessageBubble({
   return (
     <div
       className={cn(
-        "flex items-end gap-2 my-2 w-full",
+        "flex items-end gap-2 my-1.5 w-full",
         isSelf ? "justify-end" : "justify-start"
       )}
     >
@@ -57,33 +57,41 @@ export function MessageBubble({
           showTooltip={showGroupMeta}
           alignTooltip="left"
           onClick={showGroupMeta ? handleAvatarClick : undefined}
-          className="mb-0.5"
+          className="mb-4"
         />
       )}
 
       <div
         className={cn(
-          "max-w-[78%] sm:max-w-[65%] rounded-2xl px-4 py-2.5 shadow-md text-sm break-words relative transition-all",
-          isSelf
-            ? "bg-brand-gradient text-white shadow-purple-950/20 rounded-br-xs"
-            : "bg-brand-card/90 border border-purple-500/20 text-brand-text shadow-sm rounded-bl-xs"
+          "flex flex-col max-w-[78%] sm:max-w-[65%]",
+          isSelf ? "items-end" : "items-start"
         )}
       >
-        {showGroupMeta && senderName && (
-          <p className="text-[11px] font-bold text-fuchsia-400 mb-0.5 select-none">
-            {senderName}
-          </p>
-        )}
-        <p className="leading-relaxed whitespace-pre-wrap">{message.text}</p>
+        <div
+          className={cn(
+            "rounded-2xl px-4 py-2.5 shadow-md text-sm break-words relative transition-all",
+            isSelf
+              ? "bg-brand-gradient text-white shadow-purple-950/20 rounded-br-xs"
+              : "bg-brand-card/90 border border-purple-500/20 text-brand-text shadow-sm rounded-bl-xs"
+          )}
+        >
+          {showGroupMeta && senderName && (
+            <p className="text-[11px] font-bold text-fuchsia-400 mb-0.5 select-none">
+              {senderName}
+            </p>
+          )}
+          <p className="leading-relaxed whitespace-pre-wrap">{message.text}</p>
+        </div>
+
         {formattedTime && (
-          <div
+          <span
             className={cn(
-              "text-[10px] mt-1 text-right select-none font-mono",
-              isSelf ? "text-purple-100/90" : "text-brand-muted"
+              "text-[10px] mt-0.5 px-1 font-mono select-none text-brand-muted",
+              isSelf ? "text-right" : "text-left"
             )}
           >
             {formattedTime}
-          </div>
+          </span>
         )}
       </div>
 
@@ -94,7 +102,7 @@ export function MessageBubble({
           size="sm"
           showTooltip={false}
           alignTooltip="right"
-          className="mb-0.5"
+          className="mb-4"
         />
       )}
     </div>
